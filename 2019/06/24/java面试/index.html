@@ -83,14 +83,16 @@
 <meta name="keywords" content="Java面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="近期Java面试感悟">
-<meta property="og:url" content="http://livemoreway.github.io/2019/06/24/java面试/index.html">
+<meta property="og:url" content="http://livemoreway.github.io/2019/06/24/Java面试/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="又是一年毕业季，想起去年毕业的自己，一年这么快过去了，从17年实习来北京，现在也快2年了，总结回忆一下之前面试过或者问过别人的面试题，还有一些学习生活感触，希望能对有即将毕业的小伙伴有些帮助，共勉。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-24T09:00:02.746Z">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/24/Java面试/j1.jpg">
+<meta property="og:updated_time" content="2019-06-25T08:18:40.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="近期Java面试感悟">
 <meta name="twitter:description" content="又是一年毕业季，想起去年毕业的自己，一年这么快过去了，从17年实习来北京，现在也快2年了，总结回忆一下之前面试过或者问过别人的面试题，还有一些学习生活感触，希望能对有即将毕业的小伙伴有些帮助，共勉。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/24/Java面试/j1.jpg">
 
 
 
@@ -120,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://livemoreway.github.io/2019/06/24/java面试/">
+  <link rel="canonical" href="http://livemoreway.github.io/2019/06/24/Java面试/">
 
 
 
@@ -262,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/24/java面试/">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/24/Java面试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="博客作者:zz">
@@ -363,37 +365,66 @@
 <li>心态很重要，找工作不要慌，机会多多。好的心态才能从容面对！</li>
 <li><strong>简历上写得一定要会</strong></li>
 </ol>
-<h2 id="学习方法也很重要"><a href="#学习方法也很重要" class="headerlink" title="学习方法也很重要"></a>学习方法也很重要</h2><ol>
-<li>mybatis是如何管理session和cache的</li>
-<li>spring里面有哪些你熟悉的设计模式，你怎么理解和应用的，如何在应用中透传参数等</li>
-</ol>
-<p>推荐三本书，1.大型网站技术架构-核心原理与案例分析。@李智慧大牛的书，2.大型分布式网站架构-设计与实践。作者：陈康贤，3.大型网站系统与java中间件实践。作者： 曾宪杰（原淘宝技术，现在蘑菇街），这三本中我看了两本，能拓宽想法和思路，开阔眼界，然后再推荐一个网站并发编程网 - ifeve.com。</p>
-<h2 id="面试感触"><a href="#面试感触" class="headerlink" title="面试感触"></a>面试感触</h2><p>基础:比如对集合类，并发包，IO/NIO，JVM，内存模型，泛型，异常，反射，等有深入了解，最好是看过源码了解底层的设计</p>
-<p>比如一般面试都会问ConcurrentHashMap，CopyOnWrite，线程池，CAS，AQS，虚拟机优化等知识点，因为这些对互联网的企业是绝对重要的</p>
-<p><strong>而且一般人这关都过不了，还发闹骚说这些没什么用，为什么要面试？</strong></p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>推荐两本自己在看的书，1.大型网站技术架构-核心原理与案例分析。@李智慧大牛的书，2.大型网站系统与java中间件实践。作者： 曾宪杰（原淘宝技术，现在蘑菇街），能拓宽想法和思路，开阔眼界，然后再推荐一个网站并发编程网 - ifeve.com。</p>
+<h2 id="面试准备"><a href="#面试准备" class="headerlink" title="面试准备"></a>面试准备</h2><p>编程技巧</p>
+<p>递归控制,循环控制,边界控制,数据结构,树的遍历</p>
+<p>面向对象思想</p>
+<p>类与对象,接口与实现,继承与封装,不可变类型,泛型</p>
+<p>设计模式</p>
+<p>Singleton,变继承关系为组合关系,对象如何创建</p>
+<p>其他</p>
+<p>并行计算,多线程,资源管理</p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>是管理和控制计算机硬件与软件资源的计算机程序</p>
+<h4 id="进程vs线程"><a href="#进程vs线程" class="headerlink" title="进程vs线程"></a>进程vs线程</h4><p>一个进程有多个线程,进程中包括内存和文件/网络句柄</p>
+<p>线程是一个栈,和PC,PC指向的是当前的指令,指令放在内存中,指针共享内存,分配栈</p>
+<p>进程是一个容器,线程才是CPU调度的基本单位,进程间交互通过TCP/IP的交互,分配内存</p>
+<h4 id="存储和寻址"><a href="#存储和寻址" class="headerlink" title="存储和寻址"></a>存储和寻址</h4><p>硬盘,内存,缓存,寄存器由慢到快,谷歌把互联网放到了内存里</p>
+<p>32位机器的寻址空间是32次方=32x32 = 4G; 64位机器是10^19Bytes; 64位</p>
+<p>物理内存中空闲的内存由算法解析分页给虚拟内存</p>
+<p>寻址过程: 由指针p先到逻辑内存进程独立2^32或2^64再到物理内存,最后再到寄存器</p>
+<p>线程是程序的多个顺序的流动动态执行,线程不能够独立执行,必须依存在应用程序之中,由应用程序提供多个线程执行控制</p>
+<h4 id="JOIN关键字"><a href="#JOIN关键字" class="headerlink" title="JOIN关键字"></a>JOIN关键字</h4><p>对于数据库以及SQL相关的面试题，这里只能介绍一部分，更多的关于MySQL数据库的索引，引擎，SQL优化方面需要自行学习。</p>
+<h5 id="Redis分布式"><a href="#Redis分布式" class="headerlink" title="Redis分布式"></a>Redis分布式</h5><p>内连接仅显示共有的部分:</p>
+<pre><code>SELECT * FROM &apos;product&apos; AS p join &apos;category&apos; AS c on p.&apos;categoryId&apos; = c.&apos;categoryId&apos;;</code></pre><p>左外连接显示左表和共有部分:</p>
+<pre><code>SELECT * FROM &apos;product&apos; AS p left join &apos;category&apos; AS c on p.&apos;categoryId&apos; = c.&apos;categoryId&apos;;</code></pre><h5 id="GROUP-BY关键字"><a href="#GROUP-BY关键字" class="headerlink" title="GROUP BY关键字"></a>GROUP BY关键字</h5><pre><code>SELECT p.&apos;categoryId&apos;,&apos;categoryName&apos;, COUNT(*) FROM &apos;product&apos; AS p LEFT JOIN &apos;category&apos; AS c ON p.&apos;category&apos; = c.&apos;category&apos; GROUP BY p.&apos;categoryId&apos;,&apos;categoryName&apos;;</code></pre><p>查询最少钱数的商品:</p>
+<pre><code>SELECT p.*, cat_min.categoryName FROM &apos;product&apos; AS p JOIN( SELECT p.&apos;categoryId&apos;,&apos;categoryName&apos;,MIN(p.&apos;price&apos;) AS min_price FROM &apos;product&apos; AS p LEFT JOIN &apos;category&apos; AS c ON p.&apos;categoryId&apos; = c.&apos;categoryId&apos; GROUP BY p.&apos;categoryId&apos;,&apos;categoryName&apos;) AS cat_min ON p.&apos;categoryId&apos; = cat_min.categoryId where p.&apos;price&apos; = cat_min.min_price;</code></pre><h5 id="事务和乐观锁"><a href="#事务和乐观锁" class="headerlink" title="事务和乐观锁"></a>事务和乐观锁</h5><p>ACID</p>
 <ul>
-<li><p>举一例子，在使用线程池时，因为使用了无界队列，在远程服务异常情况下导致内层飙升，怎么去解决？你要是连线程池都不清楚，你怎么去玩？</p>
-</li>
-<li><p>再举一例，由于对ThreadLocal理解出错，使用它做线程安全的控制，导致没能实现真的线程安全。</p>
-</li>
-<li><p>还有遇到内存泄露怎么排插问题，怎么优化系统性能</p>
-</li>
+<li>Atomicity: 原子性,一个事务保证要么全部完成要么全部不完成</li>
+<li>Consistency: 约束,事务前后数据的完整性必须保持一致</li>
+<li>Isolation: 各事务相互独立,互不影响(关键)</li>
+<li>Durability: 事务的持久性</li>
 </ul>
-<h4 id="互联网相关知识"><a href="#互联网相关知识" class="headerlink" title="互联网相关知识"></a>互联网相关知识</h4><p>从底层说起，你起码得深入了解mysql，redis，nginx，tomcat，rpc，jms等方面的知识。你要问需要了解到什么程度，我可以给你说个大慨。</p>
-<p>首先对于MySQL，你要知道常见的参数设置，存储引擎怎么去选择，还需要了解常见的索引引擎，知道怎么去选择。知道怎么去设计表，怎么优化sql，怎么根据执行计划去调优。</p>
-<p>高级的你需要去做分库分表的设计和优化，一般互联网企业的数据库都是读写分离，还会垂直与水平拆分，所以这个也有经验的成分在里面。</p>
-<p>然后redis几乎是必须的技能，而nginx和tomcat几乎都是JAVA互联网方面必配。至于rpc相关的就多的去，必须各种网络协议，序列化技术，SOA等等，你要有一个深入的理解。</p>
-<p>现在应用比较广的rpc框架，在国内就是dubbo了，开源的还有spring cloud相关技术栈，现在Spring Cloud应该应用的更广了，可以自行搜索。</p>
-<p>至于jms相关的起码得了解原理吧，一般情况下不是专门开发中间件系统和支撑系统的不需要了解太多细节，国内企业常用的主要是activeMQ、rabbitMQ、kafka。</p>
-<h4 id="编程能力-编程思想-算法能力-架构能力"><a href="#编程能力-编程思想-算法能力-架构能力" class="headerlink" title="编程能力,编程思想,算法能力,架构能力"></a>编程能力,编程思想,算法能力,架构能力</h4><ul>
-<li><p>再高级也最多红黑树吧，但是排序和查询的基本算法得会。编程思想是必须的，问你个AOP和IOC你起码的清清楚楚，设计模式不说每种都用过，但也能了解个几种。</p>
-</li>
-<li><p>编程能力这个我觉得不好去评价，但是拿一个2000W用户根据姓名年龄排序这种题目也能信手拈来。</p>
-</li>
-<li><p>最后就是架构能力，这种不是说要你设计个多牛逼多高并发的系统，起码让你做一个秒杀系统，得有一个明确的思路和方向。</p>
-</li>
-</ul>
-<p>对于面试和感悟就这么多，下篇分享一个学习过的秒杀相关业务和技术点，有问题欢迎沟通 ^_^</p>
+<h5 id="进行读写分离-使用FOR-UPDATE-锁机制耗费资源"><a href="#进行读写分离-使用FOR-UPDATE-锁机制耗费资源" class="headerlink" title="进行读写分离,使用FOR UPDATE 锁机制耗费资源"></a>进行读写分离,使用FOR UPDATE 锁机制耗费资源</h5><pre><code>SELECT count FROM &apos;product&apos; WHERE &apos;productId&apos; = 2 FOR UPDATE;
+
+UPDATE &apos;product&apos; SET &apos;count&apos; = 47 WHERE &apos;productId&apos; = 2;  SELECT count FROM &apos;product&apos; WHERE &apos;productId&apos; = 2;  COMMIT ;</code></pre><h5 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h5><p>读取数据,记录Timestamp,通过添加版本的控制,保证同一个改变只写进去一次</p>
+<pre><code>SELECT count FROM &apos;product&apos; WHERE &apos;productId&apos; = 2; </code></pre><p>写不进去的改变将输出</p>
+<pre><code>UPDATE &apos;product&apos; SET &apos;count&apos; = 45 WHERE &apos;productId&apos; = 2 AND &apos;count&apos; = 46;</code></pre><h5 id="那些方式可以用来程序调优"><a href="#那些方式可以用来程序调优" class="headerlink" title="那些方式可以用来程序调优"></a>那些方式可以用来程序调优</h5><ol>
+<li>改善数据访问方式以提升缓存命中率</li>
+<li>使用数据库连接池替代直接的数据库访问</li>
+<li>使用迭代替代递归  </li>
+<li>合并多个远程调用批量发送</li>
+<li>共享冗余数据提高访问效率</li>
+</ol>
+<h5 id="程序设计语言基础"><a href="#程序设计语言基础" class="headerlink" title="程序设计语言基础"></a>程序设计语言基础</h5><p>类型检查  编译时: C,C++,Java,GO… 运行时: Python,Perl,JavaScript,Ruby …</p>
+<p>运行/编译  编译为机器代码运行: C,C++ … 编译为中间代码,在虚拟机运行: Java,C# …  解释执行: Python,Perl,JavaScript …</p>
+<p>编程范式  面向过程: C,Visual Basic,… 面向对象: Java,C#,C++,Scala,… 函数式: Haskell,Erlang,…</p>
+<h5 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h5><p>将数据拆分到每个节点上,每个节点并行的计算出结果,将结果汇总</p>
+<h5 id="外部排序"><a href="#外部排序" class="headerlink" title="外部排序"></a>外部排序</h5><p>归并排序属于稳定排序,将数据分为左右两边,分别归并排序,再把两个有序数据</p>
+<p>归并</p>
+<p>堆结构完全二叉树,根节点最小的数值,先左节点再右节点</p>
+<p>k路归并 - PriorityQueue  使用Iterable<t>接口</t></p>
+<p>可以不断获取下一个元素的能力,元素存储/获取方式被抽象,与归根节点无关/Interable<t> merge(List&lt;Iterable<t>&gt; sortedData);</t></t></p>
+<p>归并数据源来自Iterable<t>.next(),如果缓冲区空,读取下一批元素放入缓冲区,给出缓冲区第一个元素,可配置项: 缓冲区大小,如何读取下一批元素</t></p>
+<h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>死锁分析</p>
+<p><img src="//livemoreway.github.io/2019/06/24/Java面试/j1.jpg" alt="Alt Java"></p>
+<p>synchronized(from)-&gt;别的线程在等待from  synchronized(to)-&gt;别的线程已经锁住了to</p>
+<h5 id="死锁条件必须同时满足"><a href="#死锁条件必须同时满足" class="headerlink" title="死锁条件必须同时满足"></a>死锁条件必须同时满足</h5><p>互斥等待(必须要有锁)、hold and wait、循环等待、无法剥夺的等待(无超时释放情况)</p>
+<h5 id="死锁防止"><a href="#死锁防止" class="headerlink" title="死锁防止"></a>死锁防止</h5><p>破除互斥等待   -&gt;一般无法破除;  hold and wait  -&gt;一次性获取所有的资源;  破除循环等待  -&gt; 按顺序获取资源;  破除无法剥夺  -&gt; 加入超时</p>
+<p>最好的方式是hold and wait 不要拿着from的锁再去拿to的锁,可以一次同时拿到两个锁,但是一般不允许这样,那就先拿from的锁然后去拿to的锁,拿不到就放掉from的锁,不断尝试</p>
+<h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><p>创建线程开销大,调用堆栈,操作系统需要建立数据结构来维护线程状态,比创建一个进程小得多,进程包括很多线程和内存空间</p>
+<p>线程池: 预先建立好线程,等待任务派发 BlockingQueue阻塞队列</p>
+<p>线程池的参数: corePoolSize: 线程池中初始线程数量,可能处于等待状态  maximumPoolSize: 线程池中最大允许线程数量  keepAliveTime: 超过corePoolSize部分线程如果等待这些时间将会回收</p>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2><p>对于Java面试前段部分就这么多，下次总结好了再分享其他部分，有问题欢迎沟通 ^_^</p>
 
       
     </div>
@@ -566,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#面试必问的知识点"><span class="nav-number">1.</span> <span class="nav-text">面试必问的知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习方法也很重要"><span class="nav-number">2.</span> <span class="nav-text">学习方法也很重要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面试感触"><span class="nav-number">3.</span> <span class="nav-text">面试感触</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#互联网相关知识"><span class="nav-number">3.0.1.</span> <span class="nav-text">互联网相关知识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编程能力-编程思想-算法能力-架构能力"><span class="nav-number">3.0.2.</span> <span class="nav-text">编程能力,编程思想,算法能力,架构能力</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#面试必问的知识点"><span class="nav-number">1.</span> <span class="nav-text">面试必问的知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">2.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面试准备"><span class="nav-number">3.</span> <span class="nav-text">面试准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统"><span class="nav-number">3.1.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程vs线程"><span class="nav-number">3.1.1.</span> <span class="nav-text">进程vs线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储和寻址"><span class="nav-number">3.1.2.</span> <span class="nav-text">存储和寻址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JOIN关键字"><span class="nav-number">3.1.3.</span> <span class="nav-text">JOIN关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis分布式"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">Redis分布式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GROUP-BY关键字"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">GROUP BY关键字</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务和乐观锁"><span class="nav-number">3.1.3.3.</span> <span class="nav-text">事务和乐观锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进行读写分离-使用FOR-UPDATE-锁机制耗费资源"><span class="nav-number">3.1.3.4.</span> <span class="nav-text">进行读写分离,使用FOR UPDATE 锁机制耗费资源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#乐观锁"><span class="nav-number">3.1.3.5.</span> <span class="nav-text">乐观锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#那些方式可以用来程序调优"><span class="nav-number">3.1.3.6.</span> <span class="nav-text">那些方式可以用来程序调优</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#程序设计语言基础"><span class="nav-number">3.1.3.7.</span> <span class="nav-text">程序设计语言基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#并行计算"><span class="nav-number">3.1.3.8.</span> <span class="nav-text">并行计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#外部排序"><span class="nav-number">3.1.3.9.</span> <span class="nav-text">外部排序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程"><span class="nav-number">3.1.4.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#死锁条件必须同时满足"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">死锁条件必须同时满足</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#死锁防止"><span class="nav-number">3.1.4.2.</span> <span class="nav-text">死锁防止</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池"><span class="nav-number">3.1.4.3.</span> <span class="nav-text">线程池</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未完待续"><span class="nav-number">4.</span> <span class="nav-text">未完待续</span></a></li></ol></div>
             
 
           </div>
