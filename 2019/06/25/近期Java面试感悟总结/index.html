@@ -82,17 +82,17 @@
 <meta name="description" content="又是一年毕业季，想起去年毕业的自己，一年这么快过去了，从17年实习来北京，现在也快2年了，总结回忆一下之前面试过或者问过别人的面试题，还有一些学习生活感触，希望能对有即将毕业的小伙伴有些帮助，共勉。">
 <meta name="keywords" content="Java面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="近期Java面试感悟">
-<meta property="og:url" content="http://livemoreway.github.io/2019/06/24/Java面试/index.html">
+<meta property="og:title" content="近期Java面试感悟总结">
+<meta property="og:url" content="http://livemoreway.github.io/2019/06/25/近期Java面试感悟总结/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="又是一年毕业季，想起去年毕业的自己，一年这么快过去了，从17年实习来北京，现在也快2年了，总结回忆一下之前面试过或者问过别人的面试题，还有一些学习生活感触，希望能对有即将毕业的小伙伴有些帮助，共勉。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/24/Java面试/j1.jpg">
-<meta property="og:updated_time" content="2019-06-25T08:18:40.458Z">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/25/近期Java面试感悟总结/j1.jpg">
+<meta property="og:updated_time" content="2019-06-25T08:26:03.679Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="近期Java面试感悟">
+<meta name="twitter:title" content="近期Java面试感悟总结">
 <meta name="twitter:description" content="又是一年毕业季，想起去年毕业的自己，一年这么快过去了，从17年实习来北京，现在也快2年了，总结回忆一下之前面试过或者问过别人的面试题，还有一些学习生活感触，希望能对有即将毕业的小伙伴有些帮助，共勉。">
-<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/24/Java面试/j1.jpg">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/25/近期Java面试感悟总结/j1.jpg">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://livemoreway.github.io/2019/06/24/Java面试/">
+  <link rel="canonical" href="http://livemoreway.github.io/2019/06/25/近期Java面试感悟总结/">
 
 
 
 
 
-  <title>近期Java面试感悟 | Blog</title>
+  <title>近期Java面试感悟总结 | Blog</title>
   
 
 
@@ -264,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/24/Java面试/">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/25/近期Java面试感悟总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="博客作者:zz">
@@ -281,7 +281,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">近期Java面试感悟</h1>
+          <h1 class="post-title" itemprop="name headline">近期Java面试感悟总结</h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-24T11:35:05+08:00">
-                2019-06-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-25T16:24:47+08:00">
+                2019-06-25
               </time>
             
 
@@ -416,7 +416,7 @@ UPDATE &apos;product&apos; SET &apos;count&apos; = 47 WHERE &apos;productId&apos
 <p>可以不断获取下一个元素的能力,元素存储/获取方式被抽象,与归根节点无关/Interable<t> merge(List&lt;Iterable<t>&gt; sortedData);</t></t></p>
 <p>归并数据源来自Iterable<t>.next(),如果缓冲区空,读取下一批元素放入缓冲区,给出缓冲区第一个元素,可配置项: 缓冲区大小,如何读取下一批元素</t></p>
 <h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>死锁分析</p>
-<p><img src="//livemoreway.github.io/2019/06/24/Java面试/j1.jpg" alt="Alt Java"></p>
+<p><img src="//livemoreway.github.io/2019/06/25/近期Java面试感悟总结/j1.jpg" alt="Alt Java"></p>
 <p>synchronized(from)-&gt;别的线程在等待from  synchronized(to)-&gt;别的线程已经锁住了to</p>
 <h5 id="死锁条件必须同时满足"><a href="#死锁条件必须同时满足" class="headerlink" title="死锁条件必须同时满足"></a>死锁条件必须同时满足</h5><p>互斥等待(必须要有锁)、hold and wait、循环等待、无法剥夺的等待(无超时释放情况)</p>
 <h5 id="死锁防止"><a href="#死锁防止" class="headerlink" title="死锁防止"></a>死锁防止</h5><p>破除互斥等待   -&gt;一般无法破除;  hold and wait  -&gt;一次性获取所有的资源;  破除循环等待  -&gt; 按顺序获取资源;  破除无法剥夺  -&gt; 加入超时</p>
@@ -455,8 +455,8 @@ UPDATE &apos;product&apos; SET &apos;count&apos; = 47 WHERE &apos;productId&apos
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/14/SpringData/" rel="next" title="简述Spring Data使用">
-                <i class="fa fa-chevron-left"></i> 简述Spring Data使用
+              <a href="/2019/06/24/Java面试/" rel="next" title="近期Java面试感悟">
+                <i class="fa fa-chevron-left"></i> 近期Java面试感悟
               </a>
             
           </div>
@@ -464,10 +464,6 @@ UPDATE &apos;product&apos; SET &apos;count&apos; = 47 WHERE &apos;productId&apos
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/25/近期Java面试感悟总结/" rel="prev" title="近期Java面试感悟总结">
-                近期Java面试感悟总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
