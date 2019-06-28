@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg">
-<meta property="og:updated_time" content="2019-06-28T08:08:50.961Z">
+<meta property="og:updated_time" content="2019-06-28T08:22:38.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot集成RedisTemplate使用">
 <meta name="twitter:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
@@ -360,10 +360,7 @@
       
         <p>最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。</p>
 <a id="more"></a>
-<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Redis概述</p>
-<p>C语言开发的高性能的键值对(Kay, Value)数据库,通过提供多种键值数据类型来适应不同场景下的存储需求。</p>
-<p>支持的数据类型:字符串(String), 字符串列表(List),有序字符串集合(sorted set), 哈希(hash), 字符串集合(set)。</p>
-<p>应用场景: 缓存, 任务队列, 应用排行榜, 网站访问统计, 数据过期处理, 分布式集群架构中的session分离，消息代理 (Redis的发布订阅机制可以当作简单的消息代理,使用较少,一般采用消息队列,RabbitMQ)。</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Redis概述<br>C语言开发的高性能的键值对(Kay, Value)数据库,通过提供多种键值数据类型来适应不同场景下的存储需求。<br>支持的数据类型:字符串(String), 字符串列表(List),有序字符串集合(sorted set), 哈希(hash), 字符串集合(set)。<br>应用场景: 缓存, 任务队列, 应用排行榜, 网站访问统计, 数据过期处理, 分布式集群架构中的session分离，消息代理 (Redis的发布订阅机制可以当作简单的消息代理,使用较少,一般采用消息队列,RabbitMQ)。</p>
 <h4 id="Redis与Memcache对比"><a href="#Redis与Memcache对比" class="headerlink" title="Redis与Memcache对比"></a>Redis与Memcache对比</h4><ul>
 <li><p>Memcache是内存对象缓存系统,设计目的为通过缓解数据库的压力来加快web应用的响应速度,断电情况下数据消失</p>
 </li>
@@ -403,25 +400,20 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <h4 id="Redis的List数据结构"><a href="#Redis的List数据结构" class="headerlink" title="Redis的List数据结构"></a>Redis的List数据结构</h4><ul>
 <li>Long leftPushAll(K key, V… values); 批量把一个数组或集合插入到列表中</li>
 </ul>
-<p>使用：<code>String[] stringarrays = new String[]{&quot;1&quot;,&quot;2&quot;,&quot;3&quot;};     template.opsForList().leftPushAll(&quot;list&quot;,stringarrays);</code></p>
+<p>使用：<code>String[] stringarrays = new String[]{&quot;1&quot;,&quot;2&quot;,&quot;3&quot;};</code>  <code>template.opsForList().leftPushAll(&quot;list&quot;,stringarrays);</code></p>
 <ul>
 <li>Long remove(K key, long count, Object value);从存储在键中的列表中删除等于值的元素的第一个计数事件。</li>
 </ul>
-<p>计数参数以下列方式影响操作：<br>count&gt; 0：删除等于从头到尾移动的值的元素。<br>count &lt;0：删除等于从尾到头移动的值的元素。<br>count = 0：删除等于value的所有元素。</p>
+<p>计数参数以下列方式影响操作：<br>count &gt; 0：删除等于从头到尾移动的值的元素。<br>count &lt; 0：删除等于从尾到头移动的值的元素。<br>count = 0：删除等于value的所有元素。  </p>
 <ul>
 <li>V index(K key, long index);根据下表获取列表中的值，下标是从0开始的</li>
 </ul>
 <p>使用：template.opsForList().index(“listRight”,2);</p>
-<h4 id="Redis的Hash数据结构"><a href="#Redis的Hash数据结构" class="headerlink" title="Redis的Hash数据结构"></a>Redis的Hash数据结构</h4><p>Hash数据结构应该也是最常用的，Redis的散列可以让用户将多个键值对存储到一个Redis键里面。</p>
-<p><code>public interface HashOperations&lt;H,HK,HV&gt;</code></p>
-<p>当用到map存储或获取数据的时:</p>
-<p><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg" alt="Alt RedisTemplate"></p>
-<p>当用到获取数据value和批量删除缓存数据时:</p>
-<p><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg" alt="Alt RedisTemplate"></p>
-<p>当要使用添加值到Redis中的时候：</p>
-<p><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg" alt="Alt RedisTemplate"></p>
+<h4 id="Redis的Hash数据结构"><a href="#Redis的Hash数据结构" class="headerlink" title="Redis的Hash数据结构"></a>Redis的Hash数据结构</h4><p>Hash数据结构应该也是最常用的，Redis的散列可以让用户将多个键值对存储到一个Redis键里面。<br><code>public interface HashOperations&lt;H,HK,HV&gt;</code><br>当用到map存储或获取数据的时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg" alt="Alt RedisTemplate"></p>
+<p>当用到获取数据value和批量删除缓存数据时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg" alt="Alt RedisTemplate"></p>
+<p>当要使用添加值到Redis中的时候：<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg" alt="Alt RedisTemplate"></p>
 <ul>
-<li>Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options); 使用Cursor在key的hash中迭代，相当于迭代器。</li>
+<li><code>Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options);</code> 使用Cursor在key的hash中迭代，相当于迭代器。</li>
 </ul>
 <p>使用：<code>Cursor&lt;Map.Entry&lt;Object, Object&gt;&gt; curosr = template.opsForHash().scan(&quot;redisHash&quot;, ScanOptions.ScanOptions.NONE);</code></p>
 <pre><code>while(curosr.hasNext()){ Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue()); }</code></pre><h4 id="StringRedisTemplate的使用"><a href="#StringRedisTemplate的使用" class="headerlink" title="StringRedisTemplate的使用"></a>StringRedisTemplate的使用</h4><p><code>stringRedisTemplate.opsForValue().set(&quot;zz&quot;,&quot;24&quot;,60 * 10, TimeUnit.SENCONDS); //向redis里存入数据和设置缓存时间</code></p>
@@ -431,7 +423,7 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <p><code>stringRedisTemplate.hasKey(&quot;sry&quot;);//检查key是否存在，返回boolean值</code></p>
 <p><code>stringRedisTemplate.opsForSet().add(&quot;zz_123&quot;, &quot;1&quot;,&quot;2&quot;,&quot;3&quot;);//向指定key中存放set集合</code></p>
 <p><code>stringRedisTemplate.expire(&quot;zz_123&quot;,1000 , TimeUnit.MILLISECONDS);//设置过期时间</code></p>
-<p><code>stringRedisTemplate.opsForSet().isMember(&quot;red_123&quot;, &quot;1&quot;)//根据key查看集合中是否存在指定数据</code></p>
+<p><code>stringRedisTemplate.opsForSet().isMember(&quot;red_123&quot;, &quot;1&quot;)//查看集合中是否存在指定数据</code></p>
 <p><code>stringRedisTemplate.opsForSet().members(&quot;red_123&quot;);//根据key获取set集合</code></p>
 <h4 id="使用注意点"><a href="#使用注意点" class="headerlink" title="使用注意点"></a>使用注意点</h4><p>【RedisTemplate】<br>RedisTemplate是最基本的操作类，它默认的序列化方式是 JdkSerializationRedisSerializer，在存值时，键值会被序列化为字节数组，可读性差，取值时也是一样，如果redis中存的值是正常的字符串形式，取值时将返回null</p>
 <p>【StringRedisTemplate】<br>StringRedisTemplate继承于RedisTemplate&lt;String,String&gt;，默认的序列化方式是StringRedisSerializer，存值取值都是按照字符串的形式</p>
@@ -443,32 +435,29 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <li>使用RedisTemplate存，取值时可以直接强转为对象</li>
 <li>使用StringRedisTemplate，存值得时候使用json工具类将对象转化为json字符串，取值时再将json字符串转为对象</li>
 </ol>
-<h4 id="附上json与实体Bean的转化"><a href="#附上json与实体Bean的转化" class="headerlink" title="附上json与实体Bean的转化"></a>附上json与实体Bean的转化</h4><p>【使用jackson】</p>
-<p><code>private static ObjectMapper mapper = new ObjectMapper();</code>  </p>
+<h4 id="附上json与实体Bean的转化"><a href="#附上json与实体Bean的转化" class="headerlink" title="附上json与实体Bean的转化"></a>附上json与实体Bean的转化</h4><p>【使用jackson】<br><code>private static ObjectMapper mapper = new ObjectMapper();</code>  </p>
 <p>Java对象转为JSON字符串<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg" alt="Alt RedisTemplate">  </p>
 <p>JSON字符串转为Java对象<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg" alt="Alt RedisTemplate"></p>
-<p>【使用fastJson】</p>
-<p>FastJson是用于java后台处理json格式数据的工具包，包括序列化和反序列化，主要针对Json格式字符串，JsonObject的json对象，JsonArray的Json数组对象。<br>使用方法：  </p>
+<p>【使用FastJson】<br>FastJson是用于java后台处理json格式数据的工具包，包括序列化和反序列化，主要针对Json格式字符串，JsonObject的json对象，JsonArray的Json数组对象。<br>使用方法：  </p>
 <ul>
-<li><p>Java对象转Json字符串<br>  String s = JSON.toJSONString(user); // User实体类</p>
-</li>
-<li><p>Json字符串转Json对象<br>  JSONObject jsonObject = JSON.parseObject(s); //s为Json字符串</p>
-</li>
-<li><p>Json字符串转Java对象  </p>
-<ol>
+<li>Java对象转Json字符串<br>  String s = JSON.toJSONString(user); // User实体类  </li>
+<li>Json字符串转Json对象<br>  JSONObject jsonObject = JSON.parseObject(s); //s为Json字符串  </li>
+<li>Json字符串转Java对象  <ol>
 <li>User user = JSON.parseObject(s, User.class);</li>
-<li>User user = JSON.parseObject(s, newTypeReference<user>() {});</user></li>
+<li>User user = JSON.parseObject(s, newTypeReference<user>() {});  </user></li>
 </ol>
 </li>
-<li><p>Json字符串 数组类型转Java对象</p>
-</li>
+<li>Json字符串 数组类型转Java对象</li>
 </ul>
-<p>第一种方式： <code>JSONObject jsonObject = JSON.parseObject(s); JSONArray error = jsonObject.getJSONArray(&quot;user&quot;);</code><br><code>List&lt;User&gt; errors = JSON.parseObject(user.toJSONString(), new TypeReference&lt;List&lt;User&gt;&gt;() {});</code></p>
-<p>第二种方式：//获取jsonobject对象 JSONObject jsonObject = JSON.parseObject(str);  //把对象转换成jsonArray数组<br>   JSONArray error = jsonObject.getJSONArray(“errors”);  //将数组转换成字符串 String jsonString = JSONObject.toJSONString(error);  //将字符串转成list集合<br>   List<error>  errors = JSONObject.parseArray(jsonString, Error.class);</error></p>
+<p>第一种方式： </p>
+<figure class="highlight plain"><figcaption><span>jsonObject </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;User&gt; errors = JSON.parseObject(user.toJSONString(), new TypeReference&lt;List&lt;User&gt;&gt;() &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>第二种方式：</p>
+<figure class="highlight plain"><figcaption><span>JSONObject jsonObject </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//把对象转换成jsonArray数组</span><br><span class="line">  JSONArray error = jsonObject.getJSONArray(&quot;errors&quot;);  //将数组转换成字符串 String jsonString = JSONObject.toJSONString(error);</span><br><span class="line">//将字符串转成list集合</span><br><span class="line">  List&lt;Error&gt;  errors = JSONObject.parseArray(jsonString, Error.class);</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>Java对象转Json对象<br>  JSONObject jsonObj = (JSONObject) JSON.toJSON(user);<br>  JSON json = (JSON) JSON.toJSON(user);</li>
+<li>Java对象转Json对象<br>  JSONObject jsonObj = (JSONObject) JSON.toJSON(user);<br>  JSON json = (JSON) JSON.toJSON(user);<br>总结：  </li>
 </ul>
-<p>总结：  </p>
 <ol>
 <li>对于JSON对象与JSON格式字符串的转换可以直接用toJSONString()这个方法</li>
 <li>javaBean与JSON格式字符串之间的转换要用到,JSON.toJSONString(string);</li>
