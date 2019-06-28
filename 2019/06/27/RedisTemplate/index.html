@@ -88,12 +88,9 @@
 <meta property="og:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r1.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg">
-<meta property="og:updated_time" content="2019-06-28T08:22:38.834Z">
+<meta property="og:updated_time" content="2019-06-28T08:30:17.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot集成RedisTemplate使用">
 <meta name="twitter:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
@@ -385,8 +382,7 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <p>个人使用的是StringRedisTemplate，<strong>需要注意</strong>的是StringRedisTemplate在进行批量删除时我们需要对Tempalte进行序列化。</p>
 <p>添加Redis依赖：<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r1.jpg" alt="Alt RedisTemplate"></p>
 <p>下面介绍一下RedisTempalte中常用的方法</p>
-<p><code>@Autowired</code></p>
-<p><code>private StringRedisTemplate template;</code></p>
+<p><code>@Autowired</code><br><code>private StringRedisTemplate template;</code></p>
 <h4 id="Redis的String数据结构"><a href="#Redis的String数据结构" class="headerlink" title="Redis的String数据结构"></a>Redis的String数据结构</h4><ul>
 <li>set void set(K key, V value, long timeout, TimeUnit unit);</li>
 </ul>
@@ -400,23 +396,8 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <h4 id="Redis的List数据结构"><a href="#Redis的List数据结构" class="headerlink" title="Redis的List数据结构"></a>Redis的List数据结构</h4><ul>
 <li>Long leftPushAll(K key, V… values); 批量把一个数组或集合插入到列表中</li>
 </ul>
-<p>使用：<code>String[] stringarrays = new String[]{&quot;1&quot;,&quot;2&quot;,&quot;3&quot;};</code>  <code>template.opsForList().leftPushAll(&quot;list&quot;,stringarrays);</code></p>
-<ul>
-<li>Long remove(K key, long count, Object value);从存储在键中的列表中删除等于值的元素的第一个计数事件。</li>
-</ul>
-<p>计数参数以下列方式影响操作：<br>count &gt; 0：删除等于从头到尾移动的值的元素。<br>count &lt; 0：删除等于从尾到头移动的值的元素。<br>count = 0：删除等于value的所有元素。  </p>
-<ul>
-<li>V index(K key, long index);根据下表获取列表中的值，下标是从0开始的</li>
-</ul>
-<p>使用：template.opsForList().index(“listRight”,2);</p>
-<h4 id="Redis的Hash数据结构"><a href="#Redis的Hash数据结构" class="headerlink" title="Redis的Hash数据结构"></a>Redis的Hash数据结构</h4><p>Hash数据结构应该也是最常用的，Redis的散列可以让用户将多个键值对存储到一个Redis键里面。<br><code>public interface HashOperations&lt;H,HK,HV&gt;</code><br>当用到map存储或获取数据的时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg" alt="Alt RedisTemplate"></p>
-<p>当用到获取数据value和批量删除缓存数据时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg" alt="Alt RedisTemplate"></p>
-<p>当要使用添加值到Redis中的时候：<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg" alt="Alt RedisTemplate"></p>
-<ul>
-<li><code>Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options);</code> 使用Cursor在key的hash中迭代，相当于迭代器。</li>
-</ul>
-<p>使用：<code>Cursor&lt;Map.Entry&lt;Object, Object&gt;&gt; curosr = template.opsForHash().scan(&quot;redisHash&quot;, ScanOptions.ScanOptions.NONE);</code></p>
-<pre><code>while(curosr.hasNext()){ Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue()); }</code></pre><h4 id="StringRedisTemplate的使用"><a href="#StringRedisTemplate的使用" class="headerlink" title="StringRedisTemplate的使用"></a>StringRedisTemplate的使用</h4><p><code>stringRedisTemplate.opsForValue().set(&quot;zz&quot;,&quot;24&quot;,60 * 10, TimeUnit.SENCONDS); //向redis里存入数据和设置缓存时间</code></p>
+<p>使用：<figure class="highlight plain"><figcaption><span>stringarrays </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- Long remove(K key, long count, Object value);从存储在键中的列表中删除等于值的元素的第一个计数事件。</span><br><span class="line"></span><br><span class="line">计数参数以下列方式影响操作：  </span><br><span class="line">count &gt; 0：删除等于从头到尾移动的值的元素。</span><br><span class="line">count &lt; 0：删除等于从尾到头移动的值的元素。</span><br><span class="line">count = 0：删除等于value的所有元素。  </span><br><span class="line">- V index(K key, long index);根据下表获取列表中的值，下标是从0开始的  </span><br><span class="line">使用：template.opsForList().index(&quot;listRight&quot;,2);</span><br><span class="line"></span><br><span class="line">#### Redis的Hash数据结构</span><br><span class="line"></span><br><span class="line">Hash数据结构应该也是最常用的，Redis的散列可以让用户将多个键值对存储到一个Redis键里面。  </span><br><span class="line">`public interface HashOperations&lt;H,HK,HV&gt;`  </span><br><span class="line">当用到map存储或获取数据的时:  </span><br><span class="line">![Alt RedisTemplate](RedisTemplate/r2.jpg)</span><br><span class="line"></span><br><span class="line">当用到获取数据value和批量删除缓存数据时:  </span><br><span class="line">![Alt RedisTemplate](RedisTemplate/r3.jpg)</span><br><span class="line"></span><br><span class="line">当要使用添加值到Redis中的时候：  </span><br><span class="line">![Alt RedisTemplate](RedisTemplate/r4.jpg)</span><br><span class="line"></span><br><span class="line">- `Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options);` 使用Cursor在key的hash中迭代，相当于迭代器。</span><br><span class="line"></span><br><span class="line">使用：</span><br><span class="line">```Cursor&lt;Map.Entry&lt;Object, Object&gt;&gt; curosr = template.opsForHash().scan(&quot;redisHash&quot;, ScanOptions.ScanOptions.NONE);</span><br><span class="line">while(curosr.hasNext())&#123; Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue()); &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="StringRedisTemplate的使用"><a href="#StringRedisTemplate的使用" class="headerlink" title="StringRedisTemplate的使用"></a>StringRedisTemplate的使用</h4><p><code>stringRedisTemplate.opsForValue().set(&quot;zz&quot;,&quot;24&quot;,60 * 10, TimeUnit.SENCONDS); //向redis里存入数据和设置缓存时间</code></p>
 <p><code>stringRedisTemplate.opsForValue().get(&quot;zz&quot;)//根据key获取缓存中的value</code></p>
 <p><code>stringRedisTemplate.getExpire(&quot;zz&quot;);//根据key获取过期时间</code></p>
 <p><code>stringRedisTemplate.delete(&quot;zz&quot;);//根据key删除缓存</code></p>
@@ -450,10 +431,10 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <li>Json字符串 数组类型转Java对象</li>
 </ul>
 <p>第一种方式： </p>
-<figure class="highlight plain"><figcaption><span>jsonObject </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;User&gt; errors = JSON.parseObject(user.toJSONString(), new TypeReference&lt;List&lt;User&gt;&gt;() &#123;&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSONObject jsonObject = JSON.parseObject(s); JSONArray error = jsonObject.getJSONArray(&quot;user&quot;); </span><br><span class="line">List&lt;User&gt; errors = JSON.parseObject(user.toJSONString(), new TypeReference&lt;List&lt;User&gt;&gt;() &#123;&#125;);</span><br></pre></td></tr></table></figure>
 
 <p>第二种方式：</p>
-<figure class="highlight plain"><figcaption><span>JSONObject jsonObject </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//把对象转换成jsonArray数组</span><br><span class="line">  JSONArray error = jsonObject.getJSONArray(&quot;errors&quot;);  //将数组转换成字符串 String jsonString = JSONObject.toJSONString(error);</span><br><span class="line">//将字符串转成list集合</span><br><span class="line">  List&lt;Error&gt;  errors = JSONObject.parseArray(jsonString, Error.class);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//获取jsonobject对象 JSONObject jsonObject = JSON.parseObject(str);  </span><br><span class="line">//把对象转换成jsonArray数组</span><br><span class="line">JSONArray error = jsonObject.getJSONArray(&quot;errors&quot;);  </span><br><span class="line">//将数组转换成字符串 String jsonString = JSONObject.toJSONString(error);</span><br><span class="line">//将字符串转成list集合</span><br><span class="line">List&lt;Error&gt;  errors = JSONObject.parseArray(jsonString, Error.class);</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>Java对象转Json对象<br>  JSONObject jsonObj = (JSONObject) JSON.toJSON(user);<br>  JSON json = (JSON) JSON.toJSON(user);<br>总结：  </li>
@@ -646,7 +627,7 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis与Memcache对比"><span class="nav-number">1.0.1.</span> <span class="nav-text">Redis与Memcache对比</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#RedisTemplate介绍"><span class="nav-number">2.</span> <span class="nav-text">RedisTemplate介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#StringRedisTemplate与RedisTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">StringRedisTemplate与RedisTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的String数据结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">Redis的String数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的List数据结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">Redis的List数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的Hash数据结构"><span class="nav-number">2.1.3.</span> <span class="nav-text">Redis的Hash数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringRedisTemplate的使用"><span class="nav-number">2.1.4.</span> <span class="nav-text">StringRedisTemplate的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用注意点"><span class="nav-number">2.1.5.</span> <span class="nav-text">使用注意点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附上json与实体Bean的转化"><span class="nav-number">2.1.6.</span> <span class="nav-text">附上json与实体Bean的转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">2.1.7.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis与Memcache对比"><span class="nav-number">1.0.1.</span> <span class="nav-text">Redis与Memcache对比</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#RedisTemplate介绍"><span class="nav-number">2.</span> <span class="nav-text">RedisTemplate介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#StringRedisTemplate与RedisTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">StringRedisTemplate与RedisTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的String数据结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">Redis的String数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的List数据结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">Redis的List数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringRedisTemplate的使用"><span class="nav-number">2.1.3.</span> <span class="nav-text">StringRedisTemplate的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用注意点"><span class="nav-number">2.1.4.</span> <span class="nav-text">使用注意点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附上json与实体Bean的转化"><span class="nav-number">2.1.5.</span> <span class="nav-text">附上json与实体Bean的转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">2.1.6.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></li></div>
             
 
           </div>
