@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="电脑环境： windows 10系统 64位 环境配置1.首先需要安装Node.js和配置好Node.js环境   2.安装Git和配置好Git环境   3.注册Github账户和新建一个项目,项目必须遵守格式: 账户名.github.io">
+<meta name="keywords" content="Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo+Github搭建属于自己的博客">
+<meta property="og:url" content="http://livemoreway.github.io/2019/06/11/test/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="电脑环境： windows 10系统 64位 环境配置1.首先需要安装Node.js和配置好Node.js环境   2.安装Git和配置好Git环境   3.注册Github账户和新建一个项目,项目必须遵守格式: 账户名.github.io">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo1.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo2.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo3.png">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo4.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo5.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo6.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo7.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo8.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo9.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo10.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo11.jpg">
+<meta property="og:updated_time" content="2019-06-14T10:54:58.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Hexo+Github搭建属于自己的博客">
+<meta name="twitter:description" content="电脑环境： windows 10系统 64位 环境配置1.首先需要安装Node.js和配置好Node.js环境   2.安装Git和配置好Git环境   3.注册Github账户和新建一个项目,项目必须遵守格式: 账户名.github.io">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/11/test/hexo1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://livemoreway.github.io/2019/06/11/test/">
+
+
+
+
+
+  <title>使用Hexo+Github搭建属于自己的博客 | Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/11/test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博客作者:zz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Hexo+Github搭建属于自己的博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T09:38:32+08:00">
+                2019-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo博客/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo博客</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>电脑环境： windows 10系统 64位</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>1.首先需要安装Node.js和配置好Node.js环境  </p>
+<p>2.安装Git和配置好Git环境  </p>
+<p>3.注册Github账户和新建一个项目,项目必须遵守格式: <strong>账户名.github.io</strong></p>
+<a id="more"></a>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo1.jpg" alt="Alt text">  </p>
+<p>在建好的项目右侧有个settings按钮，点击它，向下拉到Github Pages，下面的网址就是你的博客地址，能够通过外网访问。</p>
+<h3 id="hexo安装"><a href="#hexo安装" class="headerlink" title="hexo安装"></a>hexo安装</h3><p>4.安装Hexo，创建个文件夹作为你的本地博客文件空间地址。</p>
+<p>输入<strong>npm install hexo -g</strong> 开始安装Hexo</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo2.jpg" alt="Alt text"></p>
+<p>输入<strong>hexo -v</strong> 检查hexo是否安装成功</p>
+<p>输入<strong>hexo init</strong> 初始化该文件夹</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo3.png" alt="Alt text"></p>
+<p>显示”Start blogging with Hexo!” 即为成功。</p>
+<p>输入npm install，安装所需要的组件</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo4.jpg" alt="Alt text"></p>
+<p>输入hexo g，首次体验Hexo</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo5.jpg" alt="Alt text"></p>
+<p>输入hexo s，开启本地服务器，访问本地域名地址，体验Hexo<br><img src="//livemoreway.github.io/2019/06/11/test/hexo6.jpg" alt="Alt text"></p>
+<p>假如页面一直无法跳转，那么可能端口被占用了。此时可以先暂停服务器，Ctrl+C，接着输入<strong>hexo server -p</strong>端口号来改变端口号。</p>
+<p>那么如果出现如下图就成功了</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo7.jpg" alt="Alt text"></p>
+<h3 id="配置github与Hexo"><a href="#配置github与Hexo" class="headerlink" title="配置github与Hexo"></a>配置github与Hexo</h3><p>5.将Hexo与Github page连接起来，设置Git的username 和 email</p>
+<p>6.配置好git的SSH</p>
+<p>输入cd ~/.ssh，检查是否有.ssh的文件夹</p>
+<p>输入ls，查看是否有id_rsa,id_rsa.pub文件</p>
+<p>输入ssh-keygen -t rsa -C “你的github邮箱地址.com”,连续三个回车，生成密钥，最后得到的了两个文件：id_rsa和id_rsa.pub（默认的存储路径是：C:\Users\Administrator.ssh）。</p>
+<p>输入eval “$(ssh-agent -s)”添加密钥到ssh-agent</p>
+<p>再输入 ssh-add ~/.ssh/id_rsa，添加生成的SSH key到ssh-agent</p>
+<p>登录Github，点击头像下的settings，添加ssh</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo8.jpg" alt="Alt text"></p>
+<p>输入ssh -T <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>，测试添加ssh是否成功，如果看到你的用户名，就说明成功了</p>
+<p>6.配置blog文件夹下的_config.yml文件，配置Deployment中的repo的值<br>repository：github项目中创建的博客项目的的ssh地址。</p>
+<h3 id="提交发布"><a href="#提交发布" class="headerlink" title="提交发布"></a>提交发布</h3><p>7.新建一篇博客，在当前博客地址下cmd执行命令：hexo new post “博客名”</p>
+<p>这时候在文件夹_posts目录下将会看到已经创建的文件</p>
+<p>在生成以及部署文章之前，需要安装一个扩展：npm install hexo-deployer-git –save</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo9.jpg" alt="Alt text"></p>
+<p>使用编辑器编辑好文章，那么就可以使用命令：hexo d -g</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo10.jpg" alt="Alt text"></p>
+<p>部署成功后访问你的地址：http://用户名.github.io，就可以看到生成的文章。</p>
+<p><img src="//livemoreway.github.io/2019/06/11/test/hexo11.jpg" alt="Alt text"></p>
+<p>好了，到此为止，最基本的hexo+github搭建博客完成。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/06/你好，陌生人/" rel="next" title="你好,陌生人">
+                <i class="fa fa-chevron-left"></i> 你好,陌生人
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/12/SpringBoot/" rel="prev" title="浅谈SpringBoot与开发常用的技术整合">
+                浅谈SpringBoot与开发常用的技术整合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="博客作者:zz">
+            
+              <p class="site-author-name" itemprop="name">博客作者:zz</p>
+              <p class="site-description motion-element" itemprop="description">如果你觉得生活不如意,我希望你有勇气从头再来</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo安装"><span class="nav-number">2.</span> <span class="nav-text">hexo安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置github与Hexo"><span class="nav-number">3.</span> <span class="nav-text">配置github与Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交发布"><span class="nav-number">4.</span> <span class="nav-text">提交发布</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博客作者:zz</span>
+</div>
+  <div class="powered-by">无论何时何地,做你想做的事</div>
+  <div class="theme-info"></div>
+
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+  <!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
