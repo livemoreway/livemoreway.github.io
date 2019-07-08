@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近做的项目持久层是用的Spring Data，对于基本的数据访问提供了便利的方法，本文将针对Spring Data讲解它的使用，如有不足之处还请多多指教。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简述Spring Data使用">
+<meta property="og:url" content="http://livemoreway.github.io/2019/06/14/SpringData/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="最近做的项目持久层是用的Spring Data，对于基本的数据访问提供了便利的方法，本文将针对Spring Data讲解它的使用，如有不足之处还请多多指教。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d1.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d2.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d3.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d4.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d5.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d6.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d7.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d8.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d9.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d10.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d11.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d12.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d13.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d14.jpg">
+<meta property="og:updated_time" content="2019-06-14T12:04:40.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简述Spring Data使用">
+<meta name="twitter:description" content="最近做的项目持久层是用的Spring Data，对于基本的数据访问提供了便利的方法，本文将针对Spring Data讲解它的使用，如有不足之处还请多多指教。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/14/SpringData/d1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://livemoreway.github.io/2019/06/14/SpringData/">
+
+
+
+
+
+  <title>简述Spring Data使用 | Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/14/SpringData/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博客作者:zz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简述Spring Data使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-14T19:23:19+08:00">
+                2019-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Data/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Data</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近做的项目持久层是用的Spring Data，对于基本的数据访问提供了便利的方法，本文将针对<strong>Spring Data</strong>讲解它的使用，如有不足之处还请多多指教。</p>
+<a id="more"></a>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>什么是Spring Data？</p>
+<p>Spring Data 是持久层通用解决方案，支持关系型数据库Oracle，MySQL，非关系型数据库NoSql，并支持云服务的开源框架，其主要目标是使得对数据的访问变得方便快捷。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h4 id="Spring-Data简介"><a href="#Spring-Data简介" class="headerlink" title="Spring Data简介"></a>Spring Data简介</h4><p>Spring Data应用场景: 减少数据访问层的开发量</p>
+<pre><code>Spring Data JPA,Spring Data Mongo DB,Spring Data Redis(C语言编写,支持网络支持内存,键值对数据库),Spring Data Solr</code></pre><p><img src="//livemoreway.github.io/2019/06/14/SpringData/d1.jpg" alt="Alt SpringBoot"></p>
+<h4 id="Spring-Data配置"><a href="#Spring-Data配置" class="headerlink" title="Spring Data配置"></a>Spring Data配置</h4><p>使用SpringData先配置好EntityManagerFactory</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d2.jpg" alt="Alt SpringBoot"></p>
+<p>配置Spring data</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d3.jpg" alt="Alt SpringBoot"></p>
+<h4 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h4><p>主要来看看Spring Data JPA提供的接口，也是Spring Data JPA的核心概念：</p>
+<ol>
+<li>Repository：最顶层的接口，是一个空的接口，目的是为了统一所有Repository的类型，且能让组件扫描的时候自动识别。</li>
+<li>CrudRepository ：是Repository的子接口，提供CRUD的功能</li>
+<li>PagingAndSortingRepository：是CrudRepository的子接口，添加分页和排序的功能</li>
+<li>JpaRepository：是PagingAndSortingRepository的子接口，增加了一些实用的功能，比如：批量操作等。</li>
+<li>JpaSpecificationExecutor：用来做负责查询的接口</li>
+<li>Specification：是Spring Data JPA提供的一个查询规范，要做复杂的查询，只需围绕这个规范来设置查询条件即可</li>
+</ol>
+<h4 id="接口配置"><a href="#接口配置" class="headerlink" title="接口配置"></a>接口配置</h4><p>编写实体类,添加注解@Entity标识是一个实体类,@Id标识是主键,@GeneratedValue标识自增,@Column(length = 20)设置生成表的类型长度</p>
+<p>Repository接口详解</p>
+<p>Repository接口是一个空接口,Spring Data的核心接口,不提供任何方法<br>    public interface Repository&lt;T,ID extends Serializable&gt; {}</p>
+<p>@RepositoryDefinition注解,(domainClass = Employ.class, idClass = Integer.class),添加注解能达到不用extends Repository的功能</p>
+<pre><code>Repository Query Specifications,Query Annotation,Update/Delete/Transaction Repository Hierarchy</code></pre><p>CrudRepository : 继承Repository,实现增删改查操作</p>
+<p>PagingAndSortingRespository,继承CrudRepository,实现了分页和排序</p>
+<p>JpaRepository, 继承PagingAndSortingRepository,实现了JPA规范相关的方法,JpaSpecificationExecutor</p>
+<h4 id="Repository中查询方法定义规则和使用"><a href="#Repository中查询方法定义规则和使用" class="headerlink" title="Repository中查询方法定义规则和使用"></a>Repository中查询方法定义规则和使用</h4><p>Spring Data中查询方法名称的定义规则</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d4.jpg" alt="Alt SpringBoot"></p>
+<p>Spring Data完成复杂查询方法名称的命名</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d5.jpg" alt="Alt SpringBoot"></p>
+<p>对于按照方法命名规则来使用的话,有弊端<br>1)方法名会比较长,约定大于配置  2)对于一些复杂的查询,是很难实现</p>
+<h4 id="Query注解的使用"><a href="#Query注解的使用" class="headerlink" title="Query注解的使用"></a>Query注解的使用</h4><p>在Respository方法中使用,不需要遵循查询方法命名规则，只需要将@Query定义在Respository中的方法之上即可</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d6.jpg" alt="Alt SpringBoot"></p>
+<p>?1和?2代表参数,或者使用@Param(“xx”)定义的参数</p>
+<h4 id="更新和删除操作整合事务的使用"><a href="#更新和删除操作整合事务的使用" class="headerlink" title="更新和删除操作整合事务的使用"></a>更新和删除操作整合事务的使用</h4><p>@Modifying注解使用 @Modfying结合@Query注解执行更新操作</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d7.jpg" alt="Alt SpringBoot"></p>
+<p>@Transactional在Service实现类中使用</p>
+<h4 id="Spring-Data-JPA-高级应用"><a href="#Spring-Data-JPA-高级应用" class="headerlink" title="Spring Data JPA 高级应用"></a>Spring Data JPA 高级应用</h4><p>CrudRepository接口使用详解</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d8.jpg" alt="Alt SpringBoot"></p>
+<p>创建接口XXXCrudRepository继承CrudRepository,同时添加更新删除操作也要添加到事务Service中去</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d9.jpg" alt="Alt SpringBoot"></p>
+<h4 id="PagingAndSortingRespository接口使用详解"><a href="#PagingAndSortingRespository接口使用详解" class="headerlink" title="PagingAndSortingRespository接口使用详解"></a>PagingAndSortingRespository接口使用详解</h4><p>该接口包含分页和排序的功能</p>
+<p>带排序的查询: findAll(Sort sort)</p>
+<p>带排序的分页查询: findAll(Pageable pageable)</p>
+<p>创建接口 XXXPagingAndSortingRepository 继承 PagingAndSortingRepository&lt;XX,Integer&gt;</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d10.jpg" alt="Alt SpringBoot"></p>
+<p>只查询分页数据时</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d11.jpg" alt="Alt SpringBoot"></p>
+<p>JPARepository接口使用详解</p>
+<pre><code>findAll,findAll(Sort,sort),save(entities),flush,deleteInBatch(entities)</code></pre><p><img src="//livemoreway.github.io/2019/06/14/SpringData/d12.jpg" alt="Alt SpringBoot"></p>
+<p>测试查询和是否存在两个方法</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d13.jpg" alt="Alt SpringBoot"></p>
+<h4 id="JpaSpecificationExecutor接口使用详解"><a href="#JpaSpecificationExecutor接口使用详解" class="headerlink" title="JpaSpecificationExecutor接口使用详解"></a>JpaSpecificationExecutor接口使用详解</h4><p>Specification封装了JPA Criteria查询条件</p>
+<pre><code>public interface EmployeeJpaSpecificationRepository extends JpaRepository&lt;Employee,Integer&gt;,JpaSpecificationExecutor&lt;Employee&gt; {}</code></pre><p>三个参数分别代表, root: 查询的类型, query: 添加查询条件, cb: 构建Predicate</p>
+<p><img src="//livemoreway.github.io/2019/06/14/SpringData/d14.jpg" alt="Alt SpringBoot"></p>
+<h4 id="其他用法"><a href="#其他用法" class="headerlink" title="其他用法"></a>其他用法</h4><pre><code>@Query(value = &quot;select * from table where date &gt; ?1 and name in ?2&quot;)</code></pre><p>List<user> getAllUser(Date date, List<string> name);</string></user></p>
+<p>MySQL查询大于当前日期，2019-06-01这种</p>
+<pre><code>SELECT * FROM tour_order t WHERE t.use_time &lt; curdate() and t.`status` = 20; </code></pre><p>本人使用有限，关于<strong>Spring Data</strong>的用法就这么多，对于其他Spring Data的知识使用到了再更新出来，欢迎有疑问和想法的朋友交流  ^_^</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/13/synchronized/" rel="next" title="浅谈同步Synchronized关键字">
+                <i class="fa fa-chevron-left"></i> 浅谈同步Synchronized关键字
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/25/近期Java面试感悟总结/" rel="prev" title="近期Java面试感悟总结">
+                近期Java面试感悟总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="博客作者:zz">
+            
+              <p class="site-author-name" itemprop="name">博客作者:zz</p>
+              <p class="site-description motion-element" itemprop="description">如果你觉得生活不如意,我希望你有勇气从头再来</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/livemoreway" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Data简介"><span class="nav-number">2.0.1.</span> <span class="nav-text">Spring Data简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Data配置"><span class="nav-number">2.0.2.</span> <span class="nav-text">Spring Data配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Data-JPA"><span class="nav-number">2.0.3.</span> <span class="nav-text">Spring Data JPA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口配置"><span class="nav-number">2.0.4.</span> <span class="nav-text">接口配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Repository中查询方法定义规则和使用"><span class="nav-number">2.0.5.</span> <span class="nav-text">Repository中查询方法定义规则和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Query注解的使用"><span class="nav-number">2.0.6.</span> <span class="nav-text">Query注解的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新和删除操作整合事务的使用"><span class="nav-number">2.0.7.</span> <span class="nav-text">更新和删除操作整合事务的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Data-JPA-高级应用"><span class="nav-number">2.0.8.</span> <span class="nav-text">Spring Data JPA 高级应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PagingAndSortingRespository接口使用详解"><span class="nav-number">2.0.9.</span> <span class="nav-text">PagingAndSortingRespository接口使用详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JpaSpecificationExecutor接口使用详解"><span class="nav-number">2.0.10.</span> <span class="nav-text">JpaSpecificationExecutor接口使用详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他用法"><span class="nav-number">2.0.11.</span> <span class="nav-text">其他用法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博客作者:zz</span>
+</div>
+  <div class="powered-by">无论何时何地,做你想做的事</div>
+  <div class="theme-info"></div>
+
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+  <!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

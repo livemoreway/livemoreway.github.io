@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JWT,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近需要有做简单的给商家使用的App需求，登录授权方面简单使用了JWT，总结一下JWT与无状态登录和使用SpringBoot集成JWT做登录授权方面，如有不足之处还请多多指教。">
+<meta name="keywords" content="JWT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot集成使用JWT授权">
+<meta property="og:url" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="最近需要有做简单的给商家使用的App需求，登录授权方面简单使用了JWT，总结一下JWT与无状态登录和使用SpringBoot集成JWT做登录授权方面，如有不足之处还请多多指教。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t1.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t2.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t3.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t4.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t5.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t6.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t7.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t8.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t9.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t10.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t11.jpg">
+<meta property="og:updated_time" content="2019-07-05T11:21:16.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot集成使用JWT授权">
+<meta name="twitter:description" content="最近需要有做简单的给商家使用的App需求，登录授权方面简单使用了JWT，总结一下JWT与无状态登录和使用SpringBoot集成JWT做登录授权方面，如有不足之处还请多多指教。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/">
+
+
+
+
+
+  <title>SpringBoot集成使用JWT授权 | Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博客作者:zz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot集成使用JWT授权</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T15:37:29+08:00">
+                2019-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JWT/" itemprop="url" rel="index">
+                    <span itemprop="name">JWT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近需要有做简单的给商家使用的App需求，登录授权方面简单使用了JWT，总结一下JWT与无状态登录和使用SpringBoot集成JWT做登录授权方面，如有不足之处还请多多指教。</p>
+<a id="more"></a>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>什么是有状态？<br>有状态服务，即服务端需要记录每次会话的客户端信息，从而识别客户端身份，根据用户身份进行请求的处理，典型的设计如tomcat中的session。<br>例如登录：用户登录后，我们把登录者的信息保存在服务端session中，并且给用户一个cookie值，记录对应的session。然后下次请求，用户携带cookie值来，我们就能识别到对应session，从而找到用户的信息。<br>缺点是什么？  </p>
+<ul>
+<li>服务端保存大量数据，增加服务端压力  </li>
+<li>服务端保存用户状态，无法进行水平扩展  </li>
+<li>客户端请求依赖服务端，多次请求必须访问同一台服务器  </li>
+</ul>
+<p>什么是无状态<br>类似微服务集群中的每个服务，对外提供的都是Rest风格的接口。而Rest风格的一个最重要的规范就是：服务的无状态性，即：  </p>
+<ul>
+<li>服务端不保存任何客户端请求者信息  </li>
+<li>客户端的每次请求必须具备自描述信息，通过这些信息识别客户端身份<br>带来的好处是什么呢？  </li>
+<li>客户端请求不依赖服务端的信息，任何多次请求不需要必须访问到同一台服务</li>
+<li>服务端的集群和状态对客户端透明</li>
+<li>服务端可以任意的迁移和伸缩</li>
+<li>减小服务端存储压力  </li>
+</ul>
+<h4 id="如何实现无状态"><a href="#如何实现无状态" class="headerlink" title="如何实现无状态"></a>如何实现无状态</h4><p>无状态登录的流程：</p>
+<ul>
+<li>当客户端第一次请求服务时，服务端对用户进行信息认证（登录）</li>
+<li>认证通过，将用户信息进行加密形成token，返回给客户端，作为登录凭证</li>
+<li>以后每次请求，客户端都携带认证的token</li>
+<li>服务的对token进行解密，判断是否有效  </li>
+</ul>
+<p>流程图：<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t1.jpg" alt="Alt SpringBoot集成使用JWT"><br>整个登录过程中，最关键的点是什么？  <strong>token的安全性</strong><br>token是识别客户端身份的唯一标示，如果加密不够严密，被人伪造那就完蛋了。<br>采用何种方式加密才是安全可靠的呢？<br>复杂的我们可以将采用<code>JWT + RSA非对称加密</code>，简单的可以直接使用JWT。  </p>
+<h4 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h4><p>JWT，全称是Json Web Token， 是JSON风格轻量级的授权和身份认证规范，可实现无状态、分布式的Web应用授权；官网：<a href="https://jwt.io" target="_blank" rel="noopener">https://jwt.io</a><br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t2.jpg" alt="Alt SpringBoot集成使用JWT">  </p>
+<h4 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h4><p>JWT包含三部分数据：</p>
+<ul>
+<li><p>Header：头部，通常头部有两部分信息：  </p>
+<ul>
+<li>声明类型，这里是JWT</li>
+<li>加密算法，自定义</li>
+</ul>
+<p>我们会对头部进行base64加密（可解密），得到第一部分数据</p>
+</li>
+<li><p>Payload：载荷，就是有效数据，一般包含下面信息：  </p>
+<ul>
+<li>用户身份信息（注意，这里因为采用base64加密，可解密，因此不要存放敏感信息）</li>
+<li>注册声明：如token的签发时间，过期时间，签发人等</li>
+</ul>
+<p>这部分也会采用base64加密，得到第二部分数据</p>
+</li>
+<li><p>Signature：签名，是整个数据的认证信息。一般根据前两步的数据，再加上服务的的密钥（secret）（不要泄漏，最好周期性更换），通过加密算法生成。用于验证整个数据完整和可靠性</p>
+</li>
+</ul>
+<p>生成的数据格式：<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t3.jpg" alt="Alt SpringBoot集成使用JWT"></p>
+<h4 id="JWT交互过程"><a href="#JWT交互过程" class="headerlink" title="JWT交互过程"></a>JWT交互过程</h4><p>流程图：<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t4.jpg" alt="Alt SpringBoot集成使用JWT"><br>步骤翻译：</p>
+<ul>
+<li>1、用户登录</li>
+<li>2、服务的认证，通过后根据secret生成token</li>
+<li>3、将生成的token返回给用户</li>
+<li>4、用户每次请求携带token</li>
+<li>5、服务端利用公钥解读jwt签名，判断签名有效后，从Payload中获取用户信息</li>
+<li>6、处理请求，返回响应结果</li>
+</ul>
+<p>因为JWT签发的token中已经包含了用户的身份信息，并且每次请求都会携带，这样服务的就无需保存用户信息，甚至无需去数据库查询，完全符合了Rest的无状态规范。</p>
+<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>本篇先不介绍使用JWT+RSA做登录授权的过程，先介绍下相关知识点吧。<br>加密技术是对信息进行编码和解码的技术，编码是把原来可读信息（又称明文）译成代码形式（又称密文），其逆过程就是解码（解密），加密技术的要点是加密算法，加密算法可以分为三类：  </p>
+<ul>
+<li>对称加密，如AES<ul>
+<li>基本原理：将明文分成N个组，然后使用密钥对各个组进行加密，形成各自的密文，最后把所有的分组密文进行合并，形成最终的密文。</li>
+<li>优势：算法公开、计算量小、加密速度快、加密效率高</li>
+<li>缺陷：双方都使用同样密钥，安全性得不到保证 </li>
+</ul>
+</li>
+<li>非对称加密，如RSA<ul>
+<li>基本原理：同时生成两把密钥：私钥和公钥，私钥隐秘保存，公钥可以下发给信任客户端<ul>
+<li>私钥加密，持有私钥或公钥才可以解密</li>
+<li>公钥加密，持有私钥才可解密</li>
+</ul>
+</li>
+<li>优点：安全，难以破解</li>
+<li>缺点：算法比较耗时</li>
+</ul>
+</li>
+<li>不可逆加密，如MD5，SHA<ul>
+<li>基本原理：加密过程中不需要使用<a href="https://baike.baidu.com/item/%E5%AF%86%E9%92%A5" target="_blank" rel="noopener">密钥</a>，输入明文后由系统直接经过加密算法处理成密文，这种加密后的数据是无法被解密的，无法根据密文推算出明文。    </li>
+</ul>
+</li>
+</ul>
+<p>RSA算法历史：<br>1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字缩写：RSA</p>
+<h2 id="SpringBoot和JWT的集成"><a href="#SpringBoot和JWT的集成" class="headerlink" title="SpringBoot和JWT的集成"></a>SpringBoot和JWT的集成</h2><p>引入JWT与java的依赖，java-jwt<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t5.jpg" alt="Alt SpringBoot集成使用JWT"><br>自定义两个注解<br>用来跳过验证的PassToken，用于不需要登录就可以查看的接口访问<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t6.jpg" alt="Alt SpringBoot集成使用JWT"><br>需要登录才能进行操作的注解UserLoginToken,大部分需要登录才能访问的接口<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t7.jpg" alt="Alt SpringBoot集成使用JWT"><br>@Target:注解的作用目标<br>@Target(ElementType.TYPE)——接口、类、枚举、注解<br>@Target(ElementType.METHOD)——方法<br>@Target(ElementType.FIELD)——字段、枚举的常量<br>@Target(ElementType.ANNOTATION_TYPE)——注解<br>@Target(ElementType.PACKAGE)——包  </p>
+<p>@Retention：注解的保留位置<br>RetentionPolicy.SOURCE:这种类型的Annotations只在源代码级别保留,编译时就会被忽略,在class字节码文件中不包含。<br>RetentionPolicy.CLASS:这种类型的Annotations编译时被保留,默认的保留策略,在class文件中存在,但JVM将会忽略,运行时无法获得。<br>RetentionPolicy.RUNTIME:这种类型的Annotations将被JVM保留,所以他们能在运行时被JVM或其他使用反射机制的代码所读取和使用。<br>@Document：说明该注解将被包含在javadoc中<br>@Inherited：说明子类可以继承父类中的该注解  </p>
+<p><strong>生成Token的方法</strong><br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t8.jpg" alt="Alt SpringBoot集成使用JWT"><br>withAudience()存入需要保存在token的信息，这里我把用户ID存入token中<br>Algorithm.HMAC256():使用HS256生成,密钥根据用户的密码，唯一密钥的话可以保存在服务端<br>withExpireAt():设置过期时间  </p>
+<h4 id="接下来需要写一个拦截器去获取Token并验证Token"><a href="#接下来需要写一个拦截器去获取Token并验证Token" class="headerlink" title="接下来需要写一个拦截器去获取Token并验证Token"></a>接下来需要写一个拦截器去获取Token并验证Token</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	public class AuthenticationInterceptor implements HandlerInterceptor &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception &#123;</span><br><span class="line">        String token = httpServletRequest.getHeader(&quot;Authorization&quot;); // 从http请求头中取出 token</span><br><span class="line">        // 如果不是映射到方法直接通过</span><br><span class="line">        if (!(object instanceof HandlerMethod)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        HandlerMethod handlerMethod = (HandlerMethod) object;</span><br><span class="line">        Method method = handlerMethod.getMethod();</span><br><span class="line">        // 检查有没有需要用户权限的注解</span><br><span class="line">        if (method.isAnnotationPresent(PassToken.class)) &#123;</span><br><span class="line">            PassToken passToken = method.getAnnotation(PassToken.class);</span><br><span class="line">            if (passToken.required()) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 检查有没有需要用户权限的注解</span><br><span class="line">        if (method.isAnnotationPresent(UserLoginToken.class)) &#123;</span><br><span class="line">            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);</span><br><span class="line">            if (userLoginToken.required()) &#123;</span><br><span class="line">                // 执行认证</span><br><span class="line">                if (token == null) &#123;</span><br><span class="line">                    throw new RuntimeException(&quot;认证无授权token,请重新登录&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                // 获取token中的user id</span><br><span class="line">                Integer userId;</span><br><span class="line">                try &#123;</span><br><span class="line">                    userId = Integer.valueOf(JWT.decode(token).getAudience().get(0));</span><br><span class="line">                &#125; catch (JWTDecodeException j) &#123;</span><br><span class="line">                    throw new RuntimeException(&quot;401&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                TicketChecker checker = userRepository.findTicketCheckerById(userId);</span><br><span class="line">                if (checker == null) &#123;</span><br><span class="line">                    throw new RuntimeException(&quot;用户不存在，请重新登录&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                // 验证token</span><br><span class="line">                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(checker.getPassword())).build();</span><br><span class="line">                try &#123;</span><br><span class="line">                    jwtVerifier.verify(token);</span><br><span class="line">                &#125; catch (JWTDecodeException e) &#123;</span><br><span class="line">                    throw new RuntimeException(&quot;401&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>实现一个拦截器就需要实现HandlerInterceptor接口</strong></p>
+<p>HandlerInterceptor接口主要定义了三个方法<br>1.boolean preHandle ()：<br>预处理回调方法,实现处理器的预处理，第三个参数为响应的处理器,自定义Controller,返回值为true表示继续流程（如调用下一个拦截器或处理器）或者接着执行postHandle()和afterCompletion()；false表示流程中断，不会继续调用其他的拦截器或处理器，中断执行。<br>2.void postHandle()：<br>后处理回调方法，实现处理器的后处理（DispatcherServlet进行视图返回渲染之前进行调用），此时我们可以通过modelAndView（模型和视图对象）对模型数据进行处理或对视图进行处理，modelAndView也可能为null。<br>3.void afterCompletion():<br>整个请求处理完毕回调方法,该方法也是需要当前对应的Interceptor的preHandle()的返回值为true时才会执行，也就是在DispatcherServlet渲染了对应的视图之后执行。用于进行资源清理。整个请求处理完毕回调方法。如性能监控中我们可以在此记录结束时间并输出消耗时间，还可以进行一些资源清理，类似于try-catch-finally中的finally，但仅调用处理器执行链中</p>
+<p>主要流程:  </p>
+<ol>
+<li>从 http 请求头中取出 token，</li>
+<li>判断是否映射到方法</li>
+<li>检查是否有passtoken注释，有则跳过认证</li>
+<li>检查有没有需要用户登录的注解，有则需要取出并验证</li>
+<li>认证通过则可以访问，不通过会报相关错误信息</li>
+</ol>
+<h4 id="配置拦截器"><a href="#配置拦截器" class="headerlink" title="配置拦截器"></a>配置拦截器</h4><p>在配置类上添加了注解@Configuration，标明了该类是一个配置类并且会将该类作为一个SpringBean添加到IOC容器内   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addInterceptor(authenticationInterceptor())</span><br><span class="line">                .addPathPatterns(<span class="string">"/**"</span>);    <span class="comment">// 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AuthenticationInterceptor <span class="title">authenticationInterceptor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AuthenticationInterceptor();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>InterceptorRegistry内的addInterceptor需要一个实现HandlerInterceptor接口的拦截器实例，addPathPatterns方法用于设置拦截器的过滤路径规则。<br>这里我拦截所有请求，通过判断是否有@LoginRequired注解 决定是否需要登录 </p>
+<h4 id="接口示例"><a href="#接口示例" class="headerlink" title="接口示例"></a>接口示例</h4><p><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t9.jpg" alt="Alt SpringBoot集成使用JWT"><br>不加注解的话默认不验证，登录接口一般是不验证的。在getMessage()中我加上了登录注解，说明该接口必须登录获取token后，在请求头中加上token并通过验证才可以访问</p>
+<h4 id="使用postman接口测试"><a href="#使用postman接口测试" class="headerlink" title="使用postman接口测试"></a>使用postman接口测试</h4><p>在没token的情况下访问api/getMessage接口<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t10.jpg" alt="Alt SpringBoot集成使用JWT"></p>
+<p>将Token加在请求头中，再次访问getMessage接口<br><img src="//livemoreway.github.io/2019/07/05/SpringBoot集成使用JWT/t11.jpg" alt="Alt SpringBoot集成使用JWT">  </p>
+<h4 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h4><p>关于JWT与SpringBoot的简单授权使用就到这里结束了，有关<strong>JWT与RSA授权加密</strong>的知识下次再总结分享出来，欢迎有疑问和想法的朋友交流  ^_^</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JWT/" rel="tag"># JWT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/27/RedisTemplate/" rel="next" title="SpringBoot集成RedisTemplate使用">
+                <i class="fa fa-chevron-left"></i> SpringBoot集成RedisTemplate使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="博客作者:zz">
+            
+              <p class="site-author-name" itemprop="name">博客作者:zz</p>
+              <p class="site-description motion-element" itemprop="description">如果你觉得生活不如意,我希望你有勇气从头再来</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/livemoreway" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现无状态"><span class="nav-number">1.0.1.</span> <span class="nav-text">如何实现无状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JWT"><span class="nav-number">1.0.2.</span> <span class="nav-text">JWT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据格式"><span class="nav-number">1.0.3.</span> <span class="nav-text">数据格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JWT交互过程"><span class="nav-number">1.0.4.</span> <span class="nav-text">JWT交互过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非对称加密"><span class="nav-number">1.0.5.</span> <span class="nav-text">非对称加密</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot和JWT的集成"><span class="nav-number">2.</span> <span class="nav-text">SpringBoot和JWT的集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接下来需要写一个拦截器去获取Token并验证Token"><span class="nav-number">2.0.1.</span> <span class="nav-text">接下来需要写一个拦截器去获取Token并验证Token</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置拦截器"><span class="nav-number">2.0.2.</span> <span class="nav-text">配置拦截器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口示例"><span class="nav-number">2.0.3.</span> <span class="nav-text">接口示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用postman接口测试"><span class="nav-number">2.0.4.</span> <span class="nav-text">使用postman接口测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">2.0.5.</span> <span class="nav-text">未完待续</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博客作者:zz</span>
+</div>
+  <div class="powered-by">无论何时何地,做你想做的事</div>
+  <div class="theme-info"></div>
+
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+  <!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
