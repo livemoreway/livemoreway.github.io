@@ -137,7 +137,7 @@
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg">
-<meta property="og:updated_time" content="2019-06-28T08:35:50.475Z">
+<meta property="og:updated_time" content="2019-07-08T01:49:33.646Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot集成RedisTemplate使用">
 <meta name="twitter:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
@@ -460,7 +460,7 @@ redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemp
 <li><code>Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options);</code> 使用Cursor在key的hash中迭代，相当于迭代器。</li>
 </ul>
 <p>使用：</p>
-<figure class="highlight plain"><figcaption><span>Object>> curosr </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while(curosr.hasNext())&#123; Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue()); &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cursor&lt;Map.Entry&lt;Object, Object&gt;&gt; curosr = template.opsForHash().scan(<span class="string">"redisHash"</span>, ScanOptions.ScanOptions.NONE);</span><br><span class="line"><span class="keyword">while</span>(curosr.hasNext())&#123; Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+<span class="string">":"</span>+entry.getValue()); &#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="StringRedisTemplate的使用"><a href="#StringRedisTemplate的使用" class="headerlink" title="StringRedisTemplate的使用"></a>StringRedisTemplate的使用</h4><p><code>stringRedisTemplate.opsForValue().set(&quot;zz&quot;,&quot;24&quot;,60 * 10, TimeUnit.SENCONDS); //向redis里存入数据和设置缓存时间</code></p>
 <p><code>stringRedisTemplate.opsForValue().get(&quot;zz&quot;)//根据key获取缓存中的value</code></p>
