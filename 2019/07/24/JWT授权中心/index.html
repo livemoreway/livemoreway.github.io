@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JWT,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在使用微服务架构中，结合Zuul网关与RSA非对称加密实现鉴权中心，接下来介绍一下采用JWT+RSA非对称加密,实现另一种安全的无状态登录。">
+<meta name="keywords" content="JWT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT授权中心">
+<meta property="og:url" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="在使用微服务架构中，结合Zuul网关与RSA非对称加密实现鉴权中心，接下来介绍一下采用JWT+RSA非对称加密,实现另一种安全的无状态登录。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w1.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w2.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w3.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w8.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w9.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w10.jpg">
+<meta property="og:updated_time" content="2019-07-24T08:36:01.725Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JWT授权中心">
+<meta name="twitter:description" content="在使用微服务架构中，结合Zuul网关与RSA非对称加密实现鉴权中心，接下来介绍一下采用JWT+RSA非对称加密,实现另一种安全的无状态登录。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/07/24/JWT授权中心/w1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://livemoreway.github.io/2019/07/24/JWT授权中心/">
+
+
+
+
+
+  <title>JWT授权中心 | Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/07/24/JWT授权中心/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博客作者:zz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JWT授权中心</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T10:21:05+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JWT/" itemprop="url" rel="index">
+                    <span itemprop="name">JWT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在使用微服务架构中，结合Zuul网关与RSA非对称加密实现鉴权中心，接下来介绍一下采用<code>JWT+RSA非对称加密</code>,实现另一种安全的无状态登录。</p>
+<a id="more"></a>
+<h4 id="没有RSA加密时"><a href="#没有RSA加密时" class="headerlink" title="没有RSA加密时"></a>没有RSA加密时</h4><p>在微服务架构中，我们可以把服务的鉴权操作放到网关中，将未通过鉴权的请求直接拦截，如图：<br><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w1.jpg" alt="Alt JWT授权中心">  </p>
+<ul>
+<li>1、用户请求登录</li>
+<li>2、Zuul将请求转发到授权中心，请求授权</li>
+<li>3、授权中心校验完成，颁发JWT凭证</li>
+<li>4、客户端请求其它功能，携带JWT</li>
+<li>5、Zuul将jwt交给授权中心校验，通过后放行</li>
+<li>6、用户请求到达微服务</li>
+<li>7、微服务将jwt交给鉴权中心，鉴权同时解析用户信息</li>
+<li>8、鉴权中心返回用户数据给微服务</li>
+<li>9、微服务处理请求，返回响应  </li>
+</ul>
+<p><strong>发现什么问题了？</strong><br>每次鉴权都需要访问鉴权中心，系统间的网络请求频率过高，效率略差，鉴权中心的压力较大。</p>
+<h4 id="结合RSA的鉴权"><a href="#结合RSA的鉴权" class="headerlink" title="结合RSA的鉴权"></a>结合RSA的鉴权</h4><p>看图:<br><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w2.jpg" alt="Alt JWT授权中心"></p>
+<ul>
+<li>我们首先利用RSA生成公钥和私钥。私钥保存在授权中心，公钥保存在Zuul和各个微服务</li>
+<li>用户请求登录</li>
+<li>授权中心校验，通过后用私钥对JWT进行签名加密</li>
+<li>返回jwt给用户</li>
+<li>用户携带JWT访问</li>
+<li>Zuul直接通过公钥解密JWT，进行验证，验证通过则放行</li>
+<li>请求到达微服务，微服务直接用公钥解析JWT，获取用户信息，无需访问授权中心</li>
+</ul>
+<p><strong>避免服务被暴露,使用JWT在服务间鉴权</strong></p>
+<h4 id="授权中心"><a href="#授权中心" class="headerlink" title="授权中心"></a>授权中心</h4><p>授权中心的主要职责：</p>
+<ul>
+<li>用户鉴权：<ul>
+<li>接收用户的登录请求，通过用户中心的接口进行校验，通过后生成JWT</li>
+<li>使用私钥生成JWT并返回</li>
+</ul>
+</li>
+<li>服务鉴权：微服务间的调用不经过Zuul，会有风险,需要鉴权中心进行认证<ul>
+<li>原理与用户鉴权类似，但逻辑稍微复杂一些</li>
+</ul>
+</li>
+</ul>
+<p>因为生成jwt，解析jwt这样的行为以后在其它微服务中也会用到，因此我们会抽取成工具。我们把鉴权中心进行聚合，一个工具module，一个提供服务的module</p>
+<h4 id="创建启动类："><a href="#创建启动类：" class="headerlink" title="创建启动类："></a>创建启动类：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LyAuthApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(LyAuthApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置application-yml"><a href="#配置application-yml" class="headerlink" title="配置application.yml"></a>配置application.yml</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8087</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">auth-service</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://127.0.0.1:10086/eureka</span></span><br><span class="line"><span class="attr">    registry-fetch-interval-seconds:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    lease-renewal-interval-in-seconds:</span> <span class="number">5</span> <span class="comment"># 每隔5秒发送一次心跳</span></span><br><span class="line"><span class="attr">    lease-expiration-duration-in-seconds:</span> <span class="number">10</span> <span class="comment"># 10秒不发送就过期</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    ip-address:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.application.name&#125;:$&#123;server.port&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改路由：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">zuul:</span></span><br><span class="line"><span class="attr">  prefix:</span> <span class="string">/api</span> <span class="comment"># 添加路由前缀</span></span><br><span class="line"><span class="attr">  retryable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  routes:</span></span><br><span class="line"><span class="attr">    item-service:</span> <span class="string">/item/**</span></span><br><span class="line"><span class="attr">    search-service:</span> <span class="string">/search/**</span></span><br><span class="line"><span class="attr">    user-service:</span> <span class="string">/user/**</span></span><br><span class="line"><span class="attr">    auth-service:</span> <span class="string">/auth/**</span></span><br></pre></td></tr></table></figure>
+
+<p>JWT通用的工具类：<br><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w3.jpg" alt="Alt JWT授权中心"></p>
+<h3 id="1-RSA工具类："><a href="#1-RSA工具类：" class="headerlink" title="1.RSA工具类："></a>1.RSA工具类：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RsaUtils</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从文件中读取公钥</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> filename 公钥保存路径，相对于classpath</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 公钥对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PublicKey <span class="title">getPublicKey</span><span class="params">(String filename)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span>[] bytes = readFile(filename);</span><br><span class="line">        <span class="keyword">return</span> getPublicKey(bytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从文件中读取密钥</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> filename 私钥保存路径，相对于classpath</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 私钥对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PrivateKey <span class="title">getPrivateKey</span><span class="params">(String filename)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span>[] bytes = readFile(filename);</span><br><span class="line">        <span class="keyword">return</span> getPrivateKey(bytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取公钥</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bytes 公钥的字节形式</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PublicKey <span class="title">getPublicKey</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        X509EncodedKeySpec spec = <span class="keyword">new</span> X509EncodedKeySpec(bytes);</span><br><span class="line">        KeyFactory factory = KeyFactory.getInstance(<span class="string">"RSA"</span>);</span><br><span class="line">        <span class="keyword">return</span> factory.generatePublic(spec);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取密钥</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bytes 私钥的字节形式</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PrivateKey <span class="title">getPrivateKey</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        PKCS8EncodedKeySpec spec = <span class="keyword">new</span> PKCS8EncodedKeySpec(bytes);</span><br><span class="line">        KeyFactory factory = KeyFactory.getInstance(<span class="string">"RSA"</span>);</span><br><span class="line">        <span class="keyword">return</span> factory.generatePrivate(spec);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据密文，生存rsa公钥和私钥,并写入指定文件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> publicKeyFilename  公钥文件路径</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> privateKeyFilename 私钥文件路径</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> secret             生成密钥的密文</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NoSuchAlgorithmException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">generateKey</span><span class="params">(String publicKeyFilename, String privateKeyFilename, String secret)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(<span class="string">"RSA"</span>);</span><br><span class="line">        SecureRandom secureRandom = <span class="keyword">new</span> SecureRandom(secret.getBytes());</span><br><span class="line">        keyPairGenerator.initialize(<span class="number">1024</span>, secureRandom);</span><br><span class="line">        KeyPair keyPair = keyPairGenerator.genKeyPair();</span><br><span class="line">        <span class="comment">// 获取公钥并写出</span></span><br><span class="line">        <span class="keyword">byte</span>[] publicKeyBytes = keyPair.getPublic().getEncoded();</span><br><span class="line">        writeFile(publicKeyFilename, publicKeyBytes);</span><br><span class="line">        <span class="comment">// 获取私钥并写出</span></span><br><span class="line">        <span class="keyword">byte</span>[] privateKeyBytes = keyPair.getPrivate().getEncoded();</span><br><span class="line">        writeFile(privateKeyFilename, privateKeyBytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] readFile(String fileName) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Files.readAllBytes(<span class="keyword">new</span> File(fileName).toPath());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeFile</span><span class="params">(String destPath, <span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        File dest = <span class="keyword">new</span> File(destPath);</span><br><span class="line">        <span class="keyword">if</span> (!dest.exists()) &#123;</span><br><span class="line">            dest.createNewFile();</span><br><span class="line">        &#125;</span><br><span class="line">        Files.write(dest.toPath(), bytes);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-常量类"><a href="#2-常量类" class="headerlink" title="2.常量类"></a>2.常量类</h3><p>其中定义了jwt中的payload的常用key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtConstans</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String JWT_KEY_ID = <span class="string">"id"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String JWT_KEY_USER_NAME = <span class="string">"username"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-对象工具类："><a href="#3-对象工具类：" class="headerlink" title="3.对象工具类："></a>3.对象工具类：</h3><p>从jwt解析得到的数据是Object类型，转换为具体类型可能出现空指针，这个工具类进行了一些转换：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title">toLong</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Double || obj <span class="keyword">instanceof</span> Float) &#123;</span><br><span class="line">            <span class="keyword">return</span> Long.valueOf(StringUtils.substringBefore(obj.toString(), <span class="string">"."</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Number) &#123;</span><br><span class="line">            <span class="keyword">return</span> Long.valueOf(obj.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            <span class="keyword">return</span> Long.valueOf(obj.toString());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">toInt</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> toLong(obj).intValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-JWT依赖"><a href="#4-JWT依赖" class="headerlink" title="4.JWT依赖"></a>4.JWT依赖</h3><p>我们需要先在<code>ly-auth-common</code>中引入JWT依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>joda-time<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>joda-time<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuYi.Zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span>: 2018-05-26 15:43</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtUtils</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 私钥加密token</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> userInfo      载荷中的数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> privateKey    私钥</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> expireMinutes 过期时间，单位秒</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateToken</span><span class="params">(UserInfo userInfo, PrivateKey privateKey, <span class="keyword">int</span> expireMinutes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Jwts.builder()</span><br><span class="line">                .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())</span><br><span class="line">                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())</span><br><span class="line">                .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())</span><br><span class="line">                .signWith(SignatureAlgorithm.RS256, privateKey)</span><br><span class="line">                .compact();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 私钥加密token</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> userInfo      载荷中的数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> privateKey    私钥字节数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> expireMinutes 过期时间，单位秒</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateToken</span><span class="params">(UserInfo userInfo, <span class="keyword">byte</span>[] privateKey, <span class="keyword">int</span> expireMinutes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Jwts.builder()</span><br><span class="line">                .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())</span><br><span class="line">                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())</span><br><span class="line">                .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())</span><br><span class="line">                .signWith(SignatureAlgorithm.RS256, RsaUtils.getPrivateKey(privateKey))</span><br><span class="line">                .compact();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 公钥解析token</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token     用户请求中的token</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> publicKey 公钥</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Jws&lt;Claims&gt; <span class="title">parserToken</span><span class="params">(String token, PublicKey publicKey)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 公钥解析token</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token     用户请求中的token</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> publicKey 公钥字节数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Jws&lt;Claims&gt; <span class="title">parserToken</span><span class="params">(String token, <span class="keyword">byte</span>[] publicKey)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Jwts.parser().setSigningKey(RsaUtils.getPublicKey(publicKey))</span><br><span class="line">                .parseClaimsJws(token);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取token中的用户信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token     用户请求中的令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> publicKey 公钥</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 用户信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> UserInfo <span class="title">getInfoFromToken</span><span class="params">(String token, PublicKey publicKey)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Jws&lt;Claims&gt; claimsJws = parserToken(token, publicKey);</span><br><span class="line">        Claims body = claimsJws.getBody();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UserInfo(</span><br><span class="line">                ObjectUtils.toLong(body.get(JwtConstans.JWT_KEY_ID)),</span><br><span class="line">                ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME))</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取token中的用户信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token     用户请求中的令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> publicKey 公钥</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 用户信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> UserInfo <span class="title">getInfoFromToken</span><span class="params">(String token, <span class="keyword">byte</span>[] publicKey)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Jws&lt;Claims&gt; claimsJws = parserToken(token, publicKey);</span><br><span class="line">        Claims body = claimsJws.getBody();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UserInfo(</span><br><span class="line">                ObjectUtils.toLong(body.get(JwtConstans.JWT_KEY_ID)),</span><br><span class="line">                ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME))</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line">运行测试生成RSA公钥和私钥的代码:</span><br><span class="line">![Alt JWT授权中心](JWT授权中心/w4.jpg)  </span><br><span class="line">运行之后，查看目标目录：  </span><br><span class="line">![Alt JWT授权中心](JWT授权中心/w5.jpg)  </span><br><span class="line">公钥和私钥已经生成了！  </span><br><span class="line">#### 测试生成token</span><br><span class="line">![Alt JWT授权中心](JWT授权中心/w6.jpg)</span><br><span class="line">#### 测试解析token</span><br><span class="line">![Alt JWT授权中心](JWT授权中心/w7.jpg)</span><br><span class="line">## 2.提供登录授权接口</span><br><span class="line">接下来，我们需要在`ly-auth-servcice`编写对外提供登录授权服务。基本流程如下：</span><br><span class="line"></span><br><span class="line">- 客户端携带用户名和密码请求登录</span><br><span class="line">- 授权中心调用客户中心接口，根据用户名和密码查询用户信息</span><br><span class="line">- 如果用户名密码正确，能获取用户，否则为空，则登录失败</span><br><span class="line">- 如果校验成功，则生成JWT并返回</span><br><span class="line">### 2.1.生成公钥和私钥</span><br><span class="line"></span><br><span class="line">我们需要在授权中心生成真正的公钥和私钥。我们必须有一个生成公钥和私钥的secret，这个可以配置到`application.yml`中：</span><br><span class="line">```yaml</span><br><span class="line">ly:</span><br><span class="line">  jwt:</span><br><span class="line">    secret: ly@Login(Auth&#125;*^31)&amp;zz% # 登录校验的密钥</span><br><span class="line">    pubKeyPath: D:/rsa/rsa.pub # 公钥地址</span><br><span class="line">    priKeyPath: D:/rsa/rsa.pri # 私钥地址</span><br><span class="line">    expire: 30 # 过期时间,单位分钟</span><br></pre></td></tr></table></figure>
+
+<p>然后编写属性类，加载这些数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"ly.jwt"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String secret; <span class="comment">// 密钥</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String pubKeyPath;<span class="comment">// 公钥</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String priKeyPath;<span class="comment">// 私钥</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expire;<span class="comment">// token过期时间</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> PublicKey publicKey; <span class="comment">// 公钥</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> PrivateKey privateKey; <span class="comment">// 私钥</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(JwtProperties.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            File pubKey = <span class="keyword">new</span> File(pubKeyPath);</span><br><span class="line">            File priKey = <span class="keyword">new</span> File(priKeyPath);</span><br><span class="line">            <span class="keyword">if</span> (!pubKey.exists() || !priKey.exists()) &#123;</span><br><span class="line">                <span class="comment">// 生成公钥和私钥</span></span><br><span class="line">                RsaUtils.generateKey(pubKeyPath, priKeyPath, secret);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 获取公钥和私钥</span></span><br><span class="line">            <span class="keyword">this</span>.publicKey = RsaUtils.getPublicKey(pubKeyPath);</span><br><span class="line">            <span class="keyword">this</span>.privateKey = RsaUtils.getPrivateKey(priKeyPath);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="string">"初始化公钥和私钥失败！"</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// getter setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h4><p><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w8.jpg" alt="Alt JWT授权中心"></p>
+<h3 id="2-5-Zuul的敏感头过滤"><a href="#2-5-Zuul的敏感头过滤" class="headerlink" title="2.5.Zuul的敏感头过滤"></a>2.5.Zuul的敏感头过滤</h3><p>Zuul内部有默认的过滤器，会对请求和响应头信息进行重组，过滤掉敏感的头信息：<br>而这个<code>SensitiveHeaders</code>的默认值就包含了<code>set-cookie</code>：
+全局设置：</p>
+<ul>
+<li><code>zuul.sensitive-headers=</code> </li>
+</ul>
+<p>指定路由设置：</p>
+<ul>
+<li><code>zuul.routes.&lt;routeName&gt;.sensitive-headers=</code></li>
+<li><code>zuul.routes.&lt;routeName&gt;.custom-sensitive-headers=true</code></li>
+</ul>
+<p>思路都是把敏感头设置为null<br><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w9.jpg" alt="Alt JWT授权中心"></p>
+<h2 id="3-4-刷新token"><a href="#3-4-刷新token" class="headerlink" title="3.4.刷新token"></a>3.4.刷新token</h2><p>每当用户在页面进行新的操作，都应该刷新token的过期时间，否则30分钟后用户的登录信息就无效了。而刷新其实就是重新生成一份token，然后写入cookie即可。</p>
+<p>那么问题来了：我们怎么知道用户有操作呢？</p>
+<p>事实上，每当用户来查询其个人信息，就证明他正在浏览网页，此时刷新cookie是比较合适的时机。因此我们可以对刚刚的校验用户登录状态的接口进行改进，加入刷新token的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 验证用户信息</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> token</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"verify"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;UserInfo&gt; <span class="title">verifyUser</span><span class="params">(@CookieValue(<span class="string">"LY_TOKEN"</span>)</span> String token,</span></span><br><span class="line"><span class="function">                                  HttpServletRequest request, HttpServletResponse response) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 获取token信息</span></span><br><span class="line">        UserInfo userInfo = JwtUtils.getInfoFromToken(token, prop.getPublicKey());</span><br><span class="line">        <span class="comment">// 如果成功，我们还需要刷新token</span></span><br><span class="line">        String newToken = JwtUtils.generateToken(userInfo, </span><br><span class="line">                                                 prop.getPrivateKey(), prop.getExpire());</span><br><span class="line">        <span class="comment">// 然后写入cookie中</span></span><br><span class="line">        <span class="comment">// 将token写入cookie,并指定httpOnly为true，防止通过JS获取和修改</span></span><br><span class="line">        CookieUtils.setCookie(request, response, prop.getCookieName(),</span><br><span class="line">                              newToken, prop.getCookieMaxAge(), <span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 成功后直接返回</span></span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(userInfo);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="comment">// 抛出异常，证明token无效，直接返回401</span></span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-网关的登录拦截器"><a href="#4-网关的登录拦截器" class="headerlink" title="4.网关的登录拦截器"></a>4.网关的登录拦截器</h1><p>接下来，我们在Zuul编写拦截器，对用户的token进行校验，如果发现未登录，则进行拦截。</p>
+<h2 id="4-1-编写过滤器逻辑"><a href="#4-1-编写过滤器逻辑" class="headerlink" title="4.1.编写过滤器逻辑"></a>4.1.编写过滤器逻辑</h2><p>基本逻辑：</p>
+<ul>
+<li>获取cookie中的token</li>
+<li>通过JWT对token进行校验</li>
+<li>通过：则放行；不通过：则重定向到登录页</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuYi.Zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span>: 2018-05-29 08:57</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(JwtProperties.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginFilter</span> <span class="keyword">extends</span> <span class="title">ZuulFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtProperties prop;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(LoginFilter.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"pre"</span>; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">filterOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取上下文</span></span><br><span class="line">        RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="comment">// 获取request</span></span><br><span class="line">        HttpServletRequest request = ctx.getRequest();</span><br><span class="line">        <span class="comment">// 获取token</span></span><br><span class="line">        String token = CookieUtils.getCookieValue(request, prop.getCookieName());</span><br><span class="line">        <span class="comment">// 校验</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 校验通过什么都不做，即放行</span></span><br><span class="line">            JwtUtils.getInfoFromToken(token, prop.getPublicKey());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 校验出现异常，返回403</span></span><br><span class="line">            ctx.setSendZuulResponse(<span class="keyword">false</span>);</span><br><span class="line">            ctx.setResponseStatusCode(<span class="number">403</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，我们需要在拦截时，配置一个白名单，如果在名单内，则不进行拦截。</p>
+<h2 id="4-3-白名单"><a href="#4-3-白名单" class="headerlink" title="4.3.白名单"></a>4.3.白名单</h2><p>要注意，并不是所有的路径我们都需要拦截<br>在<code>application.yaml</code>中添加规则：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ly:</span></span><br><span class="line"><span class="attr">  filter:</span></span><br><span class="line"><span class="attr">    allowPaths:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/auth</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/search</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/user/register</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/user/check</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/user/code</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/api/item</span></span><br></pre></td></tr></table></figure>
+
+<p>内容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"ly.filter"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; allowPaths;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">getAllowPaths</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> allowPaths;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAllowPaths</span><span class="params">(List&lt;String&gt; allowPaths)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.allowPaths = allowPaths;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在过滤器中的<code>shouldFilter</code>方法中添加判断逻辑：<br><img src="//livemoreway.github.io/2019/07/24/JWT授权中心/w10.jpg" alt="Alt JWT授权中心"><br>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(&#123;JwtProperties.class, FilterProperties.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginFilter</span> <span class="keyword">extends</span> <span class="title">ZuulFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtProperties jwtProp;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> FilterProperties filterProp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(LoginFilter.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"pre"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">filterOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获取上下文</span></span><br><span class="line">        RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="comment">// 获取request</span></span><br><span class="line">        HttpServletRequest req = ctx.getRequest();</span><br><span class="line">        <span class="comment">// 获取路径</span></span><br><span class="line">        String requestURI = req.getRequestURI();</span><br><span class="line">        <span class="comment">// 判断白名单</span></span><br><span class="line">        <span class="keyword">return</span> !isAllowPath(requestURI);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isAllowPath</span><span class="params">(String requestURI)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 定义一个标记</span></span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">// 遍历允许访问的路径</span></span><br><span class="line">        <span class="keyword">for</span> (String path : <span class="keyword">this</span>.filterProp.getAllowPaths()) &#123;</span><br><span class="line">            <span class="comment">// 然后判断是否是符合</span></span><br><span class="line">            <span class="keyword">if</span>(requestURI.startsWith(path))&#123;</span><br><span class="line">                flag = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取上下文</span></span><br><span class="line">        RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="comment">// 获取request</span></span><br><span class="line">        HttpServletRequest request = ctx.getRequest();</span><br><span class="line">        <span class="comment">// 获取token</span></span><br><span class="line">        String token = CookieUtils.getCookieValue(request, jwtProp.getCookieName());</span><br><span class="line">        <span class="comment">// 校验</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 校验通过什么都不做，即放行</span></span><br><span class="line">            JwtUtils.getInfoFromToken(token, jwtProp.getPublicKey());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 校验出现异常，返回403</span></span><br><span class="line">            ctx.setSendZuulResponse(<span class="keyword">false</span>);</span><br><span class="line">            ctx.setResponseStatusCode(<span class="number">403</span>);</span><br><span class="line">            logger.error(<span class="string">"非法访问，未登录，地址：&#123;&#125;"</span>, request.getRemoteHost(), e );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再次测试：<br>可以优化的点<br>授权登录还需要完善:<br>1.需要引入权限控制系统<br>2.在AuthFilter中,应该判断权限<br>3.授权中心还可以做服务鉴权</p>
+<h4 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h4><p>关于JWT与SpringBoot的简单授权使用就到这里结束了，欢迎有疑问和想法的朋友交流  ^_^</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JWT/" rel="tag"># JWT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/SpringBoot集成使用JWT/" rel="next" title="SpringBoot集成使用JWT授权">
+                <i class="fa fa-chevron-left"></i> SpringBoot集成使用JWT授权
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="博客作者:zz">
+            
+              <p class="site-author-name" itemprop="name">博客作者:zz</p>
+              <p class="site-description motion-element" itemprop="description">如果你觉得生活不如意,我希望你有勇气从头再来</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/livemoreway" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#没有RSA加密时"><span class="nav-number">1.</span> <span class="nav-text">没有RSA加密时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合RSA的鉴权"><span class="nav-number">2.</span> <span class="nav-text">结合RSA的鉴权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#授权中心"><span class="nav-number">3.</span> <span class="nav-text">授权中心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建启动类："><span class="nav-number">4.</span> <span class="nav-text">创建启动类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置application-yml"><span class="nav-number">5.</span> <span class="nav-text">配置application.yml</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#1-RSA工具类："><span class="nav-number"></span> <span class="nav-text">1.RSA工具类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-常量类"><span class="nav-number"></span> <span class="nav-text">2.常量类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-对象工具类："><span class="nav-number"></span> <span class="nav-text">3.对象工具类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-JWT依赖"><span class="nav-number"></span> <span class="nav-text">4.JWT依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#项目结构"><span class="nav-number">1.</span> <span class="nav-text">项目结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-Zuul的敏感头过滤"><span class="nav-number"></span> <span class="nav-text">2.5.Zuul的敏感头过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-刷新token"><span class="nav-number"></span> <span class="nav-text">3.4.刷新token</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-网关的登录拦截器"><span class="nav-number"></span> <span class="nav-text">4.网关的登录拦截器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-编写过滤器逻辑"><span class="nav-number"></span> <span class="nav-text">4.1.编写过滤器逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-白名单"><span class="nav-number"></span> <span class="nav-text">4.3.白名单</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">1.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博客作者:zz</span>
+</div>
+  <div class="powered-by">无论何时何地,做你想做的事</div>
+  <div class="theme-info"></div>
+
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+  <!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
