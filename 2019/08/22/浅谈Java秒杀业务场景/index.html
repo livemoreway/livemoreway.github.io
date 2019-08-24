@@ -135,7 +135,7 @@
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m2.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg">
-<meta property="og:updated_time" content="2019-08-24T09:08:59.414Z">
+<meta property="og:updated_time" content="2019-08-24T09:17:49.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Java秒杀业务场景">
 <meta name="twitter:description" content="关于可能会接触到的秒杀业务场景，不知道小伙伴们有没有实际参与过，工作之余也跟朋友、同事聊过，今天就整理了一下，简单谈谈我对Java秒杀业务的理解。">
@@ -409,22 +409,23 @@
 <h4 id="处理热点数据"><a href="#处理热点数据" class="headerlink" title="处理热点数据"></a>处理热点数据</h4><ul>
 <li>对于做了动静分离的静态数据，那么可以长期缓存静态数据，但是针对于热点数据产生的‘临时缓存’，即不管是静态数据还是动态数据，都用一个队列短暂地缓存数秒钟，由于队列长度有限，可以采用LRU淘汰算法替换。</li>
 <li>针对于数据的限制，更多的是对于数据的保护作用，比如对被访问的商品ID使用一致性Hash算法，通过Hash做分桶，每个分桶设置一个处理队列，这样可以把热点商品限制在一个请求队列里，防止因某些热点商品占用太多的服务器资源，而使其他请求始终得不到服务器的处理资源。</li>
-<li>还需要考虑到对于热点数据的隔离，不要让秒杀的热点数据影响到了其他的普通数据。<h2 id="流量削峰"><a href="#流量削峰" class="headerlink" title="流量削峰"></a>流量削峰</h2>要保证服务器能够正常顺利的处理秒杀，需要做好处理瞬时大流量的访问，一是可以通过排队、答题、分层过滤等无损用户请求的实现方案，另一种是针对于服务器稳定性考虑的限流和机器负载保护等一系列强制措施。<h4 id="排队"><a href="#排队" class="headerlink" title="排队"></a>排队</h4>针对于流量削峰，最容易想到的方案是用消息队列来缓冲瞬时流量，把同步的直接调用转换成异步的间接推送，中间通过一个队列在一端承接瞬时的高流量，在另一端平滑的将流量推送出去。<br>除了消息队列，类似的排队方式还有很多，例如：</li>
+<li>还需要考虑到对于热点数据的隔离，不要让秒杀的热点数据影响到了其他的普通数据。</li>
 </ul>
+<h2 id="流量削峰"><a href="#流量削峰" class="headerlink" title="流量削峰"></a>流量削峰</h2><p>要保证服务器能够正常顺利的处理秒杀，需要做好处理瞬时大流量的访问，一是可以通过排队、答题、分层过滤等无损用户请求的实现方案，另一种是针对于服务器稳定性考虑的限流和机器负载保护等一系列强制措施。</p>
+<h4 id="排队"><a href="#排队" class="headerlink" title="排队"></a>排队</h4><p>针对于流量削峰，最容易想到的方案是用消息队列来缓冲瞬时流量，把同步的直接调用转换成异步的间接推送，中间通过一个队列在一端承接瞬时的高流量，在另一端平滑的将流量推送出去。<br>除了消息队列，类似的排队方式还有很多，例如：</p>
 <ol>
 <li>利用线程池加锁等待也是一种常用的排队方式；</li>
 <li>先进先出，先进后出等常用的内存排队算法的实现方式；</li>
-<li>把请求序列化到文件中，然后再顺序地读文件（例如基于MySQL binlog的同步机制）来恢复请求等方式。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg" alt="Alt 浅谈Java秒杀业务场景"><h4 id="答题"><a href="#答题" class="headerlink" title="答题"></a>答题</h4>可以通过答题来增加购买的复杂度，第一个目的是防止部分买家使用秒杀器在参加秒杀时作弊，第二个目的其实就是延缓请求，将请求的峰值基于时间分片了。<br>在验证答题的过程中，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录，用户的Cookie是否完整，用户是否重复频繁提交等等。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg" alt="Alt 浅谈Java秒杀业务场景"><h2 id="减库存"><a href="#减库存" class="headerlink" title="减库存"></a>减库存</h2>秒杀的关键是对于商品库存的操作，要防止超卖现象的发生，对于减库存的这个操作，一般有以下几种方式：  </li>
+<li>把请求序列化到文件中，然后再顺序地读文件（例如基于MySQL binlog的同步机制）来恢复请求等方式。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg" alt="Alt 浅谈Java秒杀业务场景"><h4 id="答题"><a href="#答题" class="headerlink" title="答题"></a>答题</h4>可以通过答题来增加购买的复杂度，第一个目的是防止部分买家使用秒杀器在参加秒杀时作弊，第二个目的其实就是延缓请求，将请求的峰值基于时间分片了。<br>在验证答题的过程中，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录，用户的Cookie是否完整，用户是否重复频繁提交等等。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg" alt="Alt 浅谈Java秒杀业务场景"></li>
 </ol>
-<p><strong>下单减库存</strong>，即当买家下单后，在商品库存中减去对应的购买数量，下单时直接通过数据库的事物机制控制商品库存，但是可能会导致的情况是会出现恶意下单情况。<br><strong>付款减库存</strong>，即买家下单后，并不会立即减库存，而是等到有用户付款后才真正减库存，否则库存一直保留给其他买家，但是可能会遇到当并发较高情况下部分买家下单后付不了款的情况，因为可能商品已经被其他人买走了。<br><strong>预扣库存</strong>，买家下单后，库存为其保留一定的时间，超过这个时间库存将会自动释放，在买家付款前，系统会校验该订单的库存是否还有保留，如果没有保留，则再次尝试预扣，如果库存不足，则不允许继续支付，如果预扣成功，则完成付款并实际地减去库存。<br>“下单减库存”在数据一致性上，主要就是保证大并发请求时库存数据不能为负数，一是可以在应用程序上通过事务来判断，即保证减后库存不能为负数，否则就回滚；另一种方法是直接设置数据库的字段为无符号整数，这样减后库存字段值小于0就会直接执行SQL语句来报错；再有一种就是使用CASE WHEN判断语句，例如这样的SQL语句：  </p>
+<h2 id="减库存"><a href="#减库存" class="headerlink" title="减库存"></a>减库存</h2><p>秒杀的关键是对于商品库存的操作，要防止超卖现象的发生，对于减库存的这个操作，一般有以下几种方式：<br><strong>下单减库存</strong>，即当买家下单后，在商品库存中减去对应的购买数量，下单时直接通过数据库的事物机制控制商品库存，但是可能会导致的情况是会出现恶意下单情况。<br><strong>付款减库存</strong>，即买家下单后，并不会立即减库存，而是等到有用户付款后才真正减库存，否则库存一直保留给其他买家，但是可能会遇到当并发较高情况下部分买家下单后付不了款的情况，因为可能商品已经被其他人买走了。<br><strong>预扣库存</strong>，买家下单后，库存为其保留一定的时间，超过这个时间库存将会自动释放，在买家付款前，系统会校验该订单的库存是否还有保留，如果没有保留，则再次尝试预扣，如果库存不足，则不允许继续支付，如果预扣成功，则完成付款并实际地减去库存。</p>
+<h4 id="下单减库存"><a href="#下单减库存" class="headerlink" title="下单减库存"></a>下单减库存</h4><p>“下单减库存”在数据一致性上，主要就是保证大并发请求时库存数据不能为负数，一是可以在应用程序上通过事务来判断，即保证减后库存不能为负数，否则就回滚；另一种方法是直接设置数据库的字段为无符号整数，这样减后库存字段值小于0就会直接执行SQL语句来报错；再有一种就是使用CASE WHEN判断语句，例如这样的SQL语句：  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE item SET inventory = CASE WHEN inventory &gt;= xxx THEN inventory - xxx ELSE inventory END</span><br></pre></td></tr></table></figure>
 
 <p>解决并发读问题，可以采用LocalCache（在秒杀系统的单机上缓存商品相关的数据）和对数据进行分层过滤的方式。</p>
 <h2 id="秒杀项目Demo演示"><a href="#秒杀项目Demo演示" class="headerlink" title="秒杀项目Demo演示"></a>秒杀项目Demo演示</h2><p>之前写过一个商品秒杀的项目，可以做一下参考，<a href="https://gitee.com/JiuNiZuiJinDeBiaoXian/JianDanMiaoSha" target="_blank" rel="noopener">秒杀演示项目地址</a> </p>
-<ul>
-<li>针对于前端资源方面的我了解的不多，据我了解首先可以将JS/CSS文件压缩，让多个JS/CSS组合，减少连接数，CDN优化，就近原则，解决网络拥堵。  </li>
-<li>在我的演示项目中，解决超卖问题时，首先使用Redis存储秒杀订单，减库存时判断数量大于0，使用唯一索引限制用户和商品，user_id和goods_id。  <h4 id="秒杀接口优化"><a href="#秒杀接口优化" class="headerlink" title="秒杀接口优化"></a>秒杀接口优化</h4>将秒杀的同步操作下单改为异步下单，在数据库访问的流程中：</li>
-</ul>
+<p>针对于前端资源方面的我了解的不多，据我了解首先可以将JS/CSS文件压缩，让多个JS/CSS组合，减少连接数，CDN优化，就近原则，解决网络拥堵。<br>在我的演示项目中，解决超卖问题时，首先使用Redis存储秒杀订单，减库存时判断数量大于0，使用唯一索引限制用户和商品，user_id和goods_id。  </p>
+<h4 id="秒杀接口优化"><a href="#秒杀接口优化" class="headerlink" title="秒杀接口优化"></a>秒杀接口优化</h4><p>将秒杀的同步操作下单改为异步下单，在数据库访问的流程中：</p>
 <ol>
 <li>系统初始化，把商品的库存数量加载到Redis</li>
 <li>收到请求，Redis预减库存，库存不足，直接返回失败，否则继续下一步</li>
@@ -436,8 +437,11 @@
 <h4 id="安全和限流操作"><a href="#安全和限流操作" class="headerlink" title="安全和限流操作"></a>安全和限流操作</h4><ul>
 <li>秒杀接口地址隐藏，在秒杀开启之前隐藏地址，先通过接口去访问获取秒杀页面地址</li>
 <li>数学公式验证码，在点击秒杀操作之前，先输入验证码，分散用户的请求</li>
-<li>接口限流防刷，可以用拦截器减少对业务的入侵<br>针对我的演示项目所用的就这么多了，更多的细节只能在代码中才能看到，如果对于演示代码有疑问的话，欢迎与我讨论。<h2 id="更多部分"><a href="#更多部分" class="headerlink" title="更多部分"></a>更多部分</h2>未完待续…<h4 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h4>针对秒杀业务部分只有这么多了，更多的细节以及经验往往只有真正实践过操作过才有感触，但是清晰的思路以及前人踏过的坑会让我们避免出错。关于秒杀部分目前就这么多了，以后想到了再进行补充，欢迎小伙伴们与我沟通交流 ^_^</li>
+<li>接口限流防刷，可以用拦截器减少对业务的入侵  </li>
 </ul>
+<p>针对我的演示项目所用的就这么多了，更多的细节只能在代码中才能看到，如果对于演示代码有疑问的话，欢迎与我讨论。</p>
+<h2 id="更多部分"><a href="#更多部分" class="headerlink" title="更多部分"></a>更多部分</h2><p>未完待续…</p>
+<h4 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h4><p>针对秒杀业务部分只有这么多了，更多的细节以及经验往往只有真正实践过操作过才有感触，但是清晰的思路以及前人踏过的坑会让我们避免出错。关于秒杀部分目前就这么多了，以后想到了再进行补充，欢迎小伙伴们与我沟通交流 ^_^</p>
 
       
     </div>
@@ -622,7 +626,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构流程图"><span class="nav-number">2.</span> <span class="nav-text">架构流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应对热点数据"><span class="nav-number">3.</span> <span class="nav-text">应对热点数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理热点数据"><span class="nav-number">3.0.1.</span> <span class="nav-text">处理热点数据</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#流量削峰"><span class="nav-number">4.</span> <span class="nav-text">流量削峰</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#排队"><span class="nav-number">4.0.1.</span> <span class="nav-text">排队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#答题"><span class="nav-number">4.0.2.</span> <span class="nav-text">答题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#减库存"><span class="nav-number">5.</span> <span class="nav-text">减库存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#秒杀项目Demo演示"><span class="nav-number">6.</span> <span class="nav-text">秒杀项目Demo演示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#秒杀接口优化"><span class="nav-number">6.0.1.</span> <span class="nav-text">秒杀接口优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全和限流操作"><span class="nav-number">6.0.2.</span> <span class="nav-text">安全和限流操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多部分"><span class="nav-number">7.</span> <span class="nav-text">更多部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后记"><span class="nav-number">7.0.1.</span> <span class="nav-text">后记</span></a></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构流程图"><span class="nav-number">2.</span> <span class="nav-text">架构流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应对热点数据"><span class="nav-number">3.</span> <span class="nav-text">应对热点数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理热点数据"><span class="nav-number">3.0.1.</span> <span class="nav-text">处理热点数据</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#流量削峰"><span class="nav-number">4.</span> <span class="nav-text">流量削峰</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#排队"><span class="nav-number">4.0.1.</span> <span class="nav-text">排队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#答题"><span class="nav-number">4.0.2.</span> <span class="nav-text">答题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#减库存"><span class="nav-number">5.</span> <span class="nav-text">减库存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下单减库存"><span class="nav-number">5.0.1.</span> <span class="nav-text">下单减库存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#秒杀项目Demo演示"><span class="nav-number">6.</span> <span class="nav-text">秒杀项目Demo演示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#秒杀接口优化"><span class="nav-number">6.0.1.</span> <span class="nav-text">秒杀接口优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全和限流操作"><span class="nav-number">6.0.2.</span> <span class="nav-text">安全和限流操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多部分"><span class="nav-number">7.</span> <span class="nav-text">更多部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后记"><span class="nav-number">7.0.1.</span> <span class="nav-text">后记</span></a></li></ol></li></div>
             
 
           </div>
