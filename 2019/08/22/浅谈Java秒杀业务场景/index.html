@@ -135,7 +135,7 @@
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m2.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg">
 <meta property="og:image" content="http://livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg">
-<meta property="og:updated_time" content="2019-08-24T09:17:49.844Z">
+<meta property="og:updated_time" content="2019-08-24T09:19:17.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Java秒杀业务场景">
 <meta name="twitter:description" content="关于可能会接触到的秒杀业务场景，不知道小伙伴们有没有实际参与过，工作之余也跟朋友、同事聊过，今天就整理了一下，简单谈谈我对Java秒杀业务的理解。">
@@ -416,8 +416,9 @@
 <ol>
 <li>利用线程池加锁等待也是一种常用的排队方式；</li>
 <li>先进先出，先进后出等常用的内存排队算法的实现方式；</li>
-<li>把请求序列化到文件中，然后再顺序地读文件（例如基于MySQL binlog的同步机制）来恢复请求等方式。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg" alt="Alt 浅谈Java秒杀业务场景"><h4 id="答题"><a href="#答题" class="headerlink" title="答题"></a>答题</h4>可以通过答题来增加购买的复杂度，第一个目的是防止部分买家使用秒杀器在参加秒杀时作弊，第二个目的其实就是延缓请求，将请求的峰值基于时间分片了。<br>在验证答题的过程中，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录，用户的Cookie是否完整，用户是否重复频繁提交等等。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg" alt="Alt 浅谈Java秒杀业务场景"></li>
+<li>把请求序列化到文件中，然后再顺序地读文件（例如基于MySQL binlog的同步机制）来恢复请求等方式。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m4.jpg" alt="Alt 浅谈Java秒杀业务场景"></li>
 </ol>
+<h4 id="答题"><a href="#答题" class="headerlink" title="答题"></a>答题</h4><p>可以通过答题来增加购买的复杂度，第一个目的是防止部分买家使用秒杀器在参加秒杀时作弊，第二个目的其实就是延缓请求，将请求的峰值基于时间分片了。<br>在验证答题的过程中，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录，用户的Cookie是否完整，用户是否重复频繁提交等等。<br><img src="//livemoreway.github.io/2019/08/22/浅谈Java秒杀业务场景/m3.jpg" alt="Alt 浅谈Java秒杀业务场景"></p>
 <h2 id="减库存"><a href="#减库存" class="headerlink" title="减库存"></a>减库存</h2><p>秒杀的关键是对于商品库存的操作，要防止超卖现象的发生，对于减库存的这个操作，一般有以下几种方式：<br><strong>下单减库存</strong>，即当买家下单后，在商品库存中减去对应的购买数量，下单时直接通过数据库的事物机制控制商品库存，但是可能会导致的情况是会出现恶意下单情况。<br><strong>付款减库存</strong>，即买家下单后，并不会立即减库存，而是等到有用户付款后才真正减库存，否则库存一直保留给其他买家，但是可能会遇到当并发较高情况下部分买家下单后付不了款的情况，因为可能商品已经被其他人买走了。<br><strong>预扣库存</strong>，买家下单后，库存为其保留一定的时间，超过这个时间库存将会自动释放，在买家付款前，系统会校验该订单的库存是否还有保留，如果没有保留，则再次尝试预扣，如果库存不足，则不允许继续支付，如果预扣成功，则完成付款并实际地减去库存。</p>
 <h4 id="下单减库存"><a href="#下单减库存" class="headerlink" title="下单减库存"></a>下单减库存</h4><p>“下单减库存”在数据一致性上，主要就是保证大并发请求时库存数据不能为负数，一是可以在应用程序上通过事务来判断，即保证减后库存不能为负数，否则就回滚；另一种方法是直接设置数据库的字段为无符号整数，这样减后库存字段值小于0就会直接执行SQL语句来报错；再有一种就是使用CASE WHEN判断语句，例如这样的SQL语句：  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE item SET inventory = CASE WHEN inventory &gt;= xxx THEN inventory - xxx ELSE inventory END</span><br></pre></td></tr></table></figure>
