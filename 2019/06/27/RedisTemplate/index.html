@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/img.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RedisTemplate,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
+<meta name="keywords" content="RedisTemplate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot集成RedisTemplate使用">
+<meta property="og:url" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r1.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg">
+<meta property="og:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg">
+<meta property="og:updated_time" content="2019-07-08T01:49:33.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot集成RedisTemplate使用">
+<meta name="twitter:description" content="最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/27/RedisTemplate/r1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://livemoreway.github.io/2019/06/27/RedisTemplate/">
+
+
+
+
+
+  <title>SpringBoot集成RedisTemplate使用 | Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/27/RedisTemplate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博客作者:zz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot集成RedisTemplate使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T15:20:45+08:00">
+                2019-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RedisTemplate/" itemprop="url" rel="index">
+                    <span itemprop="name">RedisTemplate</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近需要有做缓存的需求，选用Redis来做缓存，总结一下Redis的使用与SpringBoot集成RedisTemplate工具，如有不足之处还请多多指教。</p>
+<a id="more"></a>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Redis概述<br>C语言开发的高性能的键值对(Kay, Value)数据库,通过提供多种键值数据类型来适应不同场景下的存储需求。<br>支持的数据类型:字符串(String), 字符串列表(List),有序字符串集合(sorted set), 哈希(hash), 字符串集合(set)。<br>应用场景: 缓存, 任务队列, 应用排行榜, 网站访问统计, 数据过期处理, 分布式集群架构中的session分离，消息代理 (Redis的发布订阅机制可以当作简单的消息代理,使用较少,一般采用消息队列,RabbitMQ)。</p>
+<h4 id="Redis与Memcache对比"><a href="#Redis与Memcache对比" class="headerlink" title="Redis与Memcache对比"></a>Redis与Memcache对比</h4><ul>
+<li><p>Memcache是内存对象缓存系统,设计目的为通过缓解数据库的压力来加快web应用的响应速度,断电情况下数据消失</p>
+</li>
+<li><p>Redis应用场景更丰富,Memcache仅适合作为缓存使用</p>
+</li>
+</ul>
+<p>Redis优缺点</p>
+<p>单进程,非阻塞式，无需处理并发请求,降低系统复杂度,不适合缓存大尺寸对象(超过100kb)。</p>
+<h2 id="RedisTemplate介绍"><a href="#RedisTemplate介绍" class="headerlink" title="RedisTemplate介绍"></a>RedisTemplate介绍</h2><p>spring 封装了 RedisTemplate 对象来进行对redis的各种操作，它支持所有的 redis 原生的 api。</p>
+<p>RedisTemplate中定义了对5种数据结构操作</p>
+<pre><code>redisTemplate.opsForValue();//操作字符串
+redisTemplate.opsForHash();//操作hash
+redisTemplate.opsForList();//操作list
+redisTemplate.opsForSet();//操作set
+redisTemplate.opsForZSet();//操作有序set</code></pre><h3 id="StringRedisTemplate与RedisTemplate"><a href="#StringRedisTemplate与RedisTemplate" class="headerlink" title="StringRedisTemplate与RedisTemplate"></a>StringRedisTemplate与RedisTemplate</h3><ul>
+<li>两者的关系是StringRedisTemplate继承RedisTemplate。</li>
+<li>两者的数据是不共通的；也就是说StringRedisTemplate只能管理StringRedisTemplate里面的数据，RedisTemplate只能管理RedisTemplate中的数据。</li>
+<li>SDR默认采用的序列化策略有两种，一种是String的序列化策略，一种是JDK的序列化策略。  </li>
+<li>StringRedisTemplate默认采用的是String的序列化策略，保存的key和value都是采用此策略序列化保存的。</li>
+<li>RedisTemplate默认采用的是JDK的序列化策略，保存的key和value都是采用此策略序列化保存的。</li>
+</ul>
+<p>个人使用的是StringRedisTemplate，<strong>需要注意</strong>的是StringRedisTemplate在进行批量删除时我们需要对Tempalte进行序列化。</p>
+<p>添加Redis依赖：<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r1.jpg" alt="Alt RedisTemplate"></p>
+<p>下面介绍一下RedisTempalte中常用的方法</p>
+<p><code>@Autowired</code><br><code>private StringRedisTemplate template;</code></p>
+<h4 id="Redis的String数据结构"><a href="#Redis的String数据结构" class="headerlink" title="Redis的String数据结构"></a>Redis的String数据结构</h4><ul>
+<li>set void set(K key, V value, long timeout, TimeUnit unit);</li>
+</ul>
+<p>使用: redisTemplate.opsForValue().set(“name”,”zz”,10, TimeUnit.SECONDS);</p>
+<ul>
+<li>multiSet void multiSet(Map&lt;? extends K, ? extends V&gt; m);为多个键分别设置它们的值</li>
+</ul>
+<p>使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String,String&gt; maps = new HashMap&lt;String, String&gt;();</span><br><span class="line">	maps.put(&quot;multi1&quot;,&quot;multi1&quot;);</span><br><span class="line">	maps.put(&quot;multi2&quot;,&quot;multi2&quot;);</span><br><span class="line">	maps.put(&quot;multi3&quot;,&quot;multi3&quot;);</span><br><span class="line">       template.opsForValue().multiSet(maps);</span><br><span class="line">       List&lt;String&gt; keys = new ArrayList&lt;String&gt;();</span><br><span class="line">       keys.add(&quot;multi1&quot;);</span><br><span class="line">       keys.add(&quot;multi2&quot;);</span><br><span class="line">       keys.add(&quot;multi3&quot;);</span><br><span class="line">       System.out.println(template.opsForValue().multiGet(keys));</span><br></pre></td></tr></table></figure>
+
+<h4 id="Redis的List数据结构"><a href="#Redis的List数据结构" class="headerlink" title="Redis的List数据结构"></a>Redis的List数据结构</h4><ul>
+<li>Long leftPushAll(K key, V… values); 批量把一个数组或集合插入到列表中</li>
+</ul>
+<p>使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String[] stringarrays = new String[]&#123;&quot;1&quot;,&quot;2&quot;,&quot;3&quot;&#125;; template.opsForList().leftPushAll(&quot;list&quot;,stringarrays);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Long remove(K key, long count, Object value);从存储在键中的列表中删除等于值的元素的第一个计数事件。</li>
+</ul>
+<p>计数参数以下列方式影响操作：<br>count &gt; 0：删除等于从头到尾移动的值的元素。<br>count &lt; 0：删除等于从尾到头移动的值的元素。<br>count = 0：删除等于value的所有元素。  </p>
+<ul>
+<li>V index(K key, long index);根据下表获取列表中的值，下标是从0开始的<br>使用：template.opsForList().index(“listRight”,2);</li>
+</ul>
+<h4 id="Redis的Hash数据结构"><a href="#Redis的Hash数据结构" class="headerlink" title="Redis的Hash数据结构"></a>Redis的Hash数据结构</h4><p>Hash数据结构应该也是最常用的，Redis的散列可以让用户将多个键值对存储到一个Redis键里面。<br><code>public interface HashOperations&lt;H,HK,HV&gt;</code><br>当用到map存储或获取数据的时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r2.jpg" alt="Alt RedisTemplate"></p>
+<p>当用到获取数据value和批量删除缓存数据时:<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r3.jpg" alt="Alt RedisTemplate"></p>
+<p>当要使用添加值到Redis中的时候：<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r4.jpg" alt="Alt RedisTemplate"></p>
+<ul>
+<li><code>Cursor&lt;Map.Entry&lt;HK, HV&gt;&gt; scan(H key, ScanOptions options);</code> 使用Cursor在key的hash中迭代，相当于迭代器。</li>
+</ul>
+<p>使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cursor&lt;Map.Entry&lt;Object, Object&gt;&gt; curosr = template.opsForHash().scan(<span class="string">"redisHash"</span>, ScanOptions.ScanOptions.NONE);</span><br><span class="line"><span class="keyword">while</span>(curosr.hasNext())&#123; Map.Entry&lt;Object, Object&gt; entry = curosr.next(); System.out.println(entry.getKey()+<span class="string">":"</span>+entry.getValue()); &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="StringRedisTemplate的使用"><a href="#StringRedisTemplate的使用" class="headerlink" title="StringRedisTemplate的使用"></a>StringRedisTemplate的使用</h4><p><code>stringRedisTemplate.opsForValue().set(&quot;zz&quot;,&quot;24&quot;,60 * 10, TimeUnit.SENCONDS); //向redis里存入数据和设置缓存时间</code></p>
+<p><code>stringRedisTemplate.opsForValue().get(&quot;zz&quot;)//根据key获取缓存中的value</code></p>
+<p><code>stringRedisTemplate.getExpire(&quot;zz&quot;);//根据key获取过期时间</code></p>
+<p><code>stringRedisTemplate.delete(&quot;zz&quot;);//根据key删除缓存</code></p>
+<p><code>stringRedisTemplate.hasKey(&quot;sry&quot;);//检查key是否存在，返回boolean值</code></p>
+<p><code>stringRedisTemplate.opsForSet().add(&quot;zz_123&quot;, &quot;1&quot;,&quot;2&quot;,&quot;3&quot;);//向指定key中存放set集合</code></p>
+<p><code>stringRedisTemplate.expire(&quot;zz_123&quot;,1000 , TimeUnit.MILLISECONDS);//设置过期时间</code></p>
+<p><code>stringRedisTemplate.opsForSet().isMember(&quot;red_123&quot;, &quot;1&quot;)//查看集合中是否存在指定数据</code></p>
+<p><code>stringRedisTemplate.opsForSet().members(&quot;red_123&quot;);//根据key获取set集合</code></p>
+<h4 id="使用注意点"><a href="#使用注意点" class="headerlink" title="使用注意点"></a>使用注意点</h4><p>【RedisTemplate】<br>RedisTemplate是最基本的操作类，它默认的序列化方式是 JdkSerializationRedisSerializer，在存值时，键值会被序列化为字节数组，可读性差，取值时也是一样，如果redis中存的值是正常的字符串形式，取值时将返回null</p>
+<p>【StringRedisTemplate】<br>StringRedisTemplate继承于RedisTemplate&lt;String,String&gt;，默认的序列化方式是StringRedisSerializer，存值取值都是按照字符串的形式</p>
+<ul>
+<li>如果存的是字符串，可以直接使用StringRedisTemplate</li>
+<li>如果是对象，可采用以下两种方式  </li>
+</ul>
+<ol>
+<li>使用RedisTemplate存，取值时可以直接强转为对象</li>
+<li>使用StringRedisTemplate，存值得时候使用json工具类将对象转化为json字符串，取值时再将json字符串转为对象</li>
+</ol>
+<h4 id="附上json与实体Bean的转化"><a href="#附上json与实体Bean的转化" class="headerlink" title="附上json与实体Bean的转化"></a>附上json与实体Bean的转化</h4><p>【使用jackson】<br><code>private static ObjectMapper mapper = new ObjectMapper();</code>  </p>
+<p>Java对象转为JSON字符串<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r5.jpg" alt="Alt RedisTemplate">  </p>
+<p>JSON字符串转为Java对象<br><img src="//livemoreway.github.io/2019/06/27/RedisTemplate/r6.jpg" alt="Alt RedisTemplate"></p>
+<p>【使用FastJson】<br>FastJson是用于java后台处理json格式数据的工具包，包括序列化和反序列化，主要针对Json格式字符串，JsonObject的json对象，JsonArray的Json数组对象。<br>使用方法：  </p>
+<ul>
+<li>Java对象转Json字符串<br>  String s = JSON.toJSONString(user); // User实体类  </li>
+<li>Json字符串转Json对象<br>  JSONObject jsonObject = JSON.parseObject(s); //s为Json字符串  </li>
+<li>Json字符串转Java对象  <ol>
+<li>User user = JSON.parseObject(s, User.class);</li>
+<li>User user = JSON.parseObject(s, newTypeReference<user>() {});  </user></li>
+</ol>
+</li>
+<li>Json字符串 数组类型转Java对象</li>
+</ul>
+<p>第一种方式： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSONObject jsonObject = JSON.parseObject(s); JSONArray error = jsonObject.getJSONArray(&quot;user&quot;); </span><br><span class="line">List&lt;User&gt; errors = JSON.parseObject(user.toJSONString(), new TypeReference&lt;List&lt;User&gt;&gt;() &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>第二种方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//获取jsonobject对象 JSONObject jsonObject = JSON.parseObject(str);  </span><br><span class="line">//把对象转换成jsonArray数组</span><br><span class="line">JSONArray error = jsonObject.getJSONArray(&quot;errors&quot;);  </span><br><span class="line">//将数组转换成字符串 String jsonString = JSONObject.toJSONString(error);</span><br><span class="line">//将字符串转成list集合</span><br><span class="line">List&lt;Error&gt;  errors = JSONObject.parseArray(jsonString, Error.class);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Java对象转Json对象<br>  JSONObject jsonObj = (JSONObject) JSON.toJSON(user);<br>  JSON json = (JSON) JSON.toJSON(user);<br>总结：  </li>
+</ul>
+<ol>
+<li>对于JSON对象与JSON格式字符串的转换可以直接用toJSONString()这个方法</li>
+<li>javaBean与JSON格式字符串之间的转换要用到,JSON.toJSONString(string);</li>
+<li>javaBean与JSON对象间的转换使用:JSON.toJSON(obj),然后使用强制类型转换，JSONObject或者JSONArray</li>
+</ol>
+<h4 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h4><p>关于RedisTemplate的使用就到这里结束了，有关<strong>RedisTemplate</strong>其他的知识下次再总结分享出来，欢迎有疑问和想法的朋友交流  ^_^</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RedisTemplate/" rel="tag"># RedisTemplate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/25/近期Java面试感悟总结/" rel="next" title="近期Java面试感悟总结">
+                <i class="fa fa-chevron-left"></i> 近期Java面试感悟总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/05/SpringBoot集成使用JWT/" rel="prev" title="SpringBoot集成使用JWT授权">
+                SpringBoot集成使用JWT授权 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="博客作者:zz">
+            
+              <p class="site-author-name" itemprop="name">博客作者:zz</p>
+              <p class="site-description motion-element" itemprop="description">如果你觉得生活不如意,我希望你有勇气从头再来</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/livemoreway" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis与Memcache对比"><span class="nav-number">1.0.1.</span> <span class="nav-text">Redis与Memcache对比</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#RedisTemplate介绍"><span class="nav-number">2.</span> <span class="nav-text">RedisTemplate介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#StringRedisTemplate与RedisTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">StringRedisTemplate与RedisTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的String数据结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">Redis的String数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的List数据结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">Redis的List数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis的Hash数据结构"><span class="nav-number">2.1.3.</span> <span class="nav-text">Redis的Hash数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringRedisTemplate的使用"><span class="nav-number">2.1.4.</span> <span class="nav-text">StringRedisTemplate的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用注意点"><span class="nav-number">2.1.5.</span> <span class="nav-text">使用注意点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附上json与实体Bean的转化"><span class="nav-number">2.1.6.</span> <span class="nav-text">附上json与实体Bean的转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">2.1.7.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博客作者:zz</span>
+</div>
+  <div class="powered-by">无论何时何地,做你想做的事</div>
+  <div class="theme-info"></div>
+
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+  <!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
