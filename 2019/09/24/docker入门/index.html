@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,">
+  <meta name="keywords" content="Docker,">
 
 
 
@@ -123,30 +123,20 @@
 
 
 
-<meta name="description" content="本文将讲解如何一步步使用Hexo+Github搭建属于自己的博客。">
-<meta name="keywords" content="Hexo">
+<meta name="description" content="目前在工作中十分流行DevOps，即开发运维“一体化”，同时伴随的就是很多便捷的运维工具，比如通过JenKins，Ansible，Docker这些，今天就整理了一下Docker相关的知识梳理。">
+<meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Hexo+Github搭建属于自己的博客">
-<meta property="og:url" content="http://livemoreway.github.io/2019/06/11/test/index.html">
+<meta property="og:title" content="docker入门">
+<meta property="og:url" content="http://livemoreway.github.io/2019/09/24/docker入门/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="本文将讲解如何一步步使用Hexo+Github搭建属于自己的博客。">
+<meta property="og:description" content="目前在工作中十分流行DevOps，即开发运维“一体化”，同时伴随的就是很多便捷的运维工具，比如通过JenKins，Ansible，Docker这些，今天就整理了一下Docker相关的知识梳理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo1.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo2.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo3.png">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo4.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo5.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo6.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo7.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo8.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo9.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo10.jpg">
-<meta property="og:image" content="http://livemoreway.github.io/2019/06/11/test/hexo11.jpg">
-<meta property="og:updated_time" content="2019-08-28T08:50:32.534Z">
+<meta property="og:image" content="http://livemoreway.github.io/2019/09/24/docker入门/d1.jpg">
+<meta property="og:updated_time" content="2019-09-24T08:59:30.786Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Hexo+Github搭建属于自己的博客">
-<meta name="twitter:description" content="本文将讲解如何一步步使用Hexo+Github搭建属于自己的博客。">
-<meta name="twitter:image" content="http://livemoreway.github.io/2019/06/11/test/hexo1.jpg">
+<meta name="twitter:title" content="docker入门">
+<meta name="twitter:description" content="目前在工作中十分流行DevOps，即开发运维“一体化”，同时伴随的就是很多便捷的运维工具，比如通过JenKins，Ansible，Docker这些，今天就整理了一下Docker相关的知识梳理。">
+<meta name="twitter:image" content="http://livemoreway.github.io/2019/09/24/docker入门/d1.jpg">
 
 
 
@@ -176,13 +166,13 @@
 
 
 
-  <link rel="canonical" href="http://livemoreway.github.io/2019/06/11/test/">
+  <link rel="canonical" href="http://livemoreway.github.io/2019/09/24/docker入门/">
 
 
 
 
 
-  <title>使用Hexo+Github搭建属于自己的博客 | Blog</title>
+  <title>docker入门 | Blog</title>
   
 
 
@@ -318,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/06/11/test/">
+    <link itemprop="mainEntityOfPage" href="http://livemoreway.github.io/2019/09/24/docker入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="博客作者:zz">
@@ -335,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">使用Hexo+Github搭建属于自己的博客</h1>
+          <h1 class="post-title" itemprop="name headline">docker入门</h1>
         
 
         <div class="post-meta">
@@ -347,8 +337,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T09:38:32+08:00">
-                2019-06-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T14:11:05+08:00">
+                2019-09-24
               </time>
             
 
@@ -370,8 +360,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo博客/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo博客</span>
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
                   </a>
                 </span>
 
@@ -407,50 +397,22 @@
       
 
       
-        <p>本文将讲解如何一步步使用Hexo+Github搭建属于自己的博客。</p>
+        <p>目前在工作中十分流行DevOps，即开发运维“一体化”，同时伴随的就是很多便捷的运维工具，比如通过JenKins，Ansible，Docker这些，今天就整理了一下Docker相关的知识梳理。</p>
 <a id="more"></a>
-<p>电脑环境： windows 10系统 64位</p>
-<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>1.首先需要安装Node.js和配置好Node.js环境  </p>
-<p>2.安装Git和配置好Git环境  </p>
-<p>3.注册Github账户和新建一个项目,项目必须遵守格式: <strong>账户名.github.io</strong></p>
-<!--more-->
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo1.jpg" alt="Alt text">  </p>
-<p>在建好的项目右侧有个settings按钮，点击它，向下拉到Github Pages，下面的网址就是你的博客地址，能够通过外网访问。</p>
-<h3 id="hexo安装"><a href="#hexo安装" class="headerlink" title="hexo安装"></a>hexo安装</h3><p>4.安装Hexo，创建个文件夹作为你的本地博客文件空间地址。</p>
-<p>输入<strong>npm install hexo -g</strong> 开始安装Hexo</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo2.jpg" alt="Alt text"></p>
-<p>输入<strong>hexo -v</strong> 检查hexo是否安装成功</p>
-<p>输入<strong>hexo init</strong> 初始化该文件夹</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo3.png" alt="Alt text"></p>
-<p>显示”Start blogging with Hexo!” 即为成功。</p>
-<p>输入npm install，安装所需要的组件</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo4.jpg" alt="Alt text"></p>
-<p>输入hexo g，首次体验Hexo</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo5.jpg" alt="Alt text"></p>
-<p>输入hexo s，开启本地服务器，访问本地域名地址，体验Hexo<br><img src="//livemoreway.github.io/2019/06/11/test/hexo6.jpg" alt="Alt text"></p>
-<p>假如页面一直无法跳转，那么可能端口被占用了。此时可以先暂停服务器，Ctrl+C，接着输入<strong>hexo server -p</strong>端口号来改变端口号。</p>
-<p>那么如果出现如下图就成功了</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo7.jpg" alt="Alt text"></p>
-<h3 id="配置github与Hexo"><a href="#配置github与Hexo" class="headerlink" title="配置github与Hexo"></a>配置github与Hexo</h3><p>5.将Hexo与Github page连接起来，设置Git的username 和 email</p>
-<p>6.配置好git的SSH</p>
-<p>输入cd ~/.ssh，检查是否有.ssh的文件夹</p>
-<p>输入ls，查看是否有id_rsa,id_rsa.pub文件</p>
-<p>输入ssh-keygen -t rsa -C “你的github邮箱地址.com”,连续三个回车，生成密钥，最后得到的了两个文件：id_rsa和id_rsa.pub（默认的存储路径是：C:\Users\Administrator.ssh）。</p>
-<p>输入eval “$(ssh-agent -s)”添加密钥到ssh-agent</p>
-<p>再输入 ssh-add ~/.ssh/id_rsa，添加生成的SSH key到ssh-agent</p>
-<p>登录Github，点击头像下的settings，添加ssh</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo8.jpg" alt="Alt text"></p>
-<p>输入ssh -T <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>，测试添加ssh是否成功，如果看到你的用户名，就说明成功了</p>
-<p>6.配置blog文件夹下的_config.yml文件，配置Deployment中的repo的值<br>repository：github项目中创建的博客项目的的ssh地址。</p>
-<h3 id="提交发布"><a href="#提交发布" class="headerlink" title="提交发布"></a>提交发布</h3><p>7.新建一篇博客，在当前博客地址下cmd执行命令：hexo new post “博客名”</p>
-<p>这时候在文件夹_posts目录下将会看到已经创建的文件</p>
-<p>在生成以及部署文章之前，需要安装一个扩展：npm install hexo-deployer-git –save</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo9.jpg" alt="Alt text"></p>
-<p>使用编辑器编辑好文章，那么就可以使用命令：hexo d -g</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo10.jpg" alt="Alt text"></p>
-<p>部署成功后访问你的地址：http://用户名.github.io，就可以看到生成的文章。</p>
-<p><img src="//livemoreway.github.io/2019/06/11/test/hexo11.jpg" alt="Alt text"></p>
-<p>好了，到此为止，最基本的hexo+github搭建博客完成。</p>
+<h4 id="什么是Docker？"><a href="#什么是Docker？" class="headerlink" title="什么是Docker？"></a>什么是Docker？</h4><p>Docker是一个开源项目，诞生于2013年初，最初是dotCloud公司内部的一个业余项目，它基于Google公司推出的Go语言实现。项目后来加入了Linux基金会，遵从了Apache2.0协议，项目代码在GitHub上进行维护。  </p>
+<p>我认为Docker 的出现一定是因为目前的后端在开发和运维阶段确实需要一种虚拟化技术解决开发环境和生产环境环境一致的问题，通过 Docker 我们可以将程序运行的环境也纳入到版本控制中，排除因为环境造成不同运行结果的可能。  </p>
+<h4 id="Docker的组成部分"><a href="#Docker的组成部分" class="headerlink" title="Docker的组成部分"></a>Docker的组成部分</h4><ol>
+<li>Docker镜像（Images）：Docker镜像是用于创建Docker容器的模板</li>
+<li>Docker容器（Container）：容器是独立运行的一个或一组应用</li>
+<li>Docker客户端（Client）：Docker客户端通过命令行或者其他工具使用Docker API与Docker守护进程通信</li>
+<li>Docker主机（Host）：一个物理或者虚拟的机器用于执行Docker守护进程和容器</li>
+<li>Docker仓库（Registry）：Docker仓库用来保存镜像，可以理解为代码控制中的代码仓库。Docker Hub提供了庞大的镜像集合供使用。</li>
+<li>Docker Machine：Docker Machine是一个简化Docker安装的命令行工具，通过一个简单的命令即可在相应的平台上安装Docker，比如VirturalBox、Digital Ocean、Microsoft Azure。<h4 id="Docker和虚拟机比较"><a href="#Docker和虚拟机比较" class="headerlink" title="Docker和虚拟机比较"></a>Docker和虚拟机比较</h4>容器是在操作系统层面上实现虚拟化，直接复用本地主机的操作系统层面上实现虚拟化，而传统的方式则是在硬件层面上实现的。<br><img src="//livemoreway.github.io/2019/09/24/docker入门/d1.jpg" alt="Alt Docker入门"><h4 id="Docker镜像与容器"><a href="#Docker镜像与容器" class="headerlink" title="Docker镜像与容器"></a>Docker镜像与容器</h4>镜像是构建Docker的基石。用户基于镜像来运行自己的容器，镜像也是Docker生命周期中的“构建部分”。镜像是基于联合文件系统的一种层式结构，由一系列指令一步一步构建出来。<br>其次Docker可以帮你构建和部署容器，你只需要把自己的应用程序或者服务打包放进容器即可。容器是基于镜像启动起来的，容器中可以运行一个或多个进程。<h2 id="Docker的安装与启动"><a href="#Docker的安装与启动" class="headerlink" title="Docker的安装与启动"></a>Docker的安装与启动</h2>演示安装Docker的步骤，建议把Docker安装到CentOS7.x以上的版本。<br>(1)yum包更新到最新<br><code>sudo yum update</code><br>(2)安装需要的软件包，yum-util提供yum-config-manager功能，另外两个是devicemapper驱动依赖的<br><code>sudo yum install -y yum-utils device-mapper-persistent-date lvn2</code><br>(3)设置yum源为阿里云<br><code>sudo yum-config-manager --add repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</code>docker1.13 e为企业版，ce为社区版<br>(4)安装docker<br><code>sudo yum install docker-ce</code><br>(5)安装后查看docker版本<br><code>docker -v</code><h4 id="设置USTC的镜像"><a href="#设置USTC的镜像" class="headerlink" title="设置USTC的镜像"></a>设置USTC的镜像</h4>ustc是老牌的linux镜像服务提供者了，usdc docker mirror的优势之一就是不需要注册，是真正的公共服务。<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker" target="_blank" rel="noopener">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a><br>编辑该文件：<br><code>vi /etc/docker/daemon.json</code><br>在该文件中输入如下内容：<br><code>{&quot;registry-mirrors&quot;:[&quot;https://docker.mirrors.ustc.edu.cn&quot;]}</code>   <h4 id="Docker的启动与停止"><a href="#Docker的启动与停止" class="headerlink" title="Docker的启动与停止"></a>Docker的启动与停止</h4></li>
+</ol>
+<p><strong>systemctl</strong>命令是系统服务管理器指令<br>启动docker：systemctl start docker<br>停止docker：systemctl stop docker<br>重启docker：systemctl restart docker<br>查看docker状态：systemctl status docker<br>开机启动docker：systemctl enable docker</p>
+<h4 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h4><p><code>docker images</code> REPOSITORY:镜像名称，TAG：镜像标签，IMAGE ID：镜像ID，CREATED：镜像的创建日期，SIZE：镜像大小<br><code>docker search</code> 搜索镜像名称,NAME:仓库名称，DESCRIPTION：镜像描述，STARS：用户评价，OFFICIAL：是否官方，AUTOMATED：自动构建<br><code>docker pull 镜像名称</code> 拉取下载镜像到本地<br><code>docker rmi 镜像ID</code> 删除镜像</p>
+<h4 id="容器相关命令"><a href="#容器相关命令" class="headerlink" title="容器相关命令"></a>容器相关命令</h4><p><code>docker ps</code> 查看正在运行的容器<br><code>docker ps -a</code> 查看所有容器<br><code>docker ps -l</code> 查看最后一次运行的容器<br><code>docker ps -f status-exited</code> 查看停止的容器</p>
+<h4 id="创建与启动容器"><a href="#创建与启动容器" class="headerlink" title="创建与启动容器"></a>创建与启动容器</h4><p>创建容器命令：docker run，-i：表示运行容器；-t：表示容器启动后会进入其命令行；-name：为创建的容器命名；-v：表示目录映射关系；-d：创建一个守护式容器在后台运行；-p：表示端口映射。<br>(1)交互式方式创建容器<br><code>docker run -it --name=容器名称 镜像名称：标签 /bin/bash</code><br>(2)守护式方式创建容器<br><code>docker run -di --name=容器名称</code></p>
 
       
     </div>
@@ -468,7 +430,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+            <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
           
         </div>
       
@@ -481,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/06/你好，陌生人/" rel="next" title="你好,陌生人">
-                <i class="fa fa-chevron-left"></i> 你好,陌生人
+              <a href="/2019/08/22/浅谈Java秒杀业务场景/" rel="next" title="浅谈Java秒杀业务场景">
+                <i class="fa fa-chevron-left"></i> 浅谈Java秒杀业务场景
               </a>
             
           </div>
@@ -490,10 +452,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/12/SpringBoot/" rel="prev" title="浅谈SpringBoot与开发常用的技术整合">
-                浅谈SpringBoot与开发常用的技术整合 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -637,7 +595,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo安装"><span class="nav-number">2.</span> <span class="nav-text">hexo安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置github与Hexo"><span class="nav-number">3.</span> <span class="nav-text">配置github与Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交发布"><span class="nav-number">4.</span> <span class="nav-text">提交发布</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Docker？"><span class="nav-number">1.</span> <span class="nav-text">什么是Docker？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker的组成部分"><span class="nav-number">2.</span> <span class="nav-text">Docker的组成部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker和虚拟机比较"><span class="nav-number">3.</span> <span class="nav-text">Docker和虚拟机比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker镜像与容器"><span class="nav-number">4.</span> <span class="nav-text">Docker镜像与容器</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的安装与启动"><span class="nav-number"></span> <span class="nav-text">Docker的安装与启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置USTC的镜像"><span class="nav-number">1.</span> <span class="nav-text">设置USTC的镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker的启动与停止"><span class="nav-number">2.</span> <span class="nav-text">Docker的启动与停止</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像相关命令"><span class="nav-number">3.</span> <span class="nav-text">镜像相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器相关命令"><span class="nav-number">4.</span> <span class="nav-text">容器相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建与启动容器"><span class="nav-number">5.</span> <span class="nav-text">创建与启动容器</span></a></li></ol></li></div>
             
 
           </div>
