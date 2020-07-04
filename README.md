@@ -5,4 +5,4 @@
 ### 持之以恒
 
 
-![](/images/star.gif)
+![](images/star.gif)
